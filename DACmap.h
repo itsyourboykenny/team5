@@ -27,7 +27,7 @@ public:
 
 	}
 	ItemType next(){ return (mapIterator++)->second; }
-	bool hasNext() const { return mapIterator != (pdacMap->end());  }
+	bool hasNext() const { return mapIterator != (pdacMap->end()); }
 
 };
 
@@ -50,7 +50,7 @@ public:
 	bool remove(const KeyType& searchKey);
 
 	void clear();
-	ItemType getItem(const KeyType& searchKey) const ;
+	ItemType getItem(const KeyType& searchKey) const;
 	bool contains(const KeyType& searchKey) const;
 
 	/** Traverses the items in this dictionary in sorted search-key order
@@ -87,7 +87,7 @@ template <class KeyType, class ItemType>
 ItemType DACmap<KeyType, ItemType>::getItem(const KeyType& searchKey) const
 {
 	typename map<KeyType, ItemType>::const_iterator foundItem = dacMap.find(searchKey);
-	if (foundItem == dacMap.end() )
+	if (foundItem == dacMap.end())
 		return ItemType();
 	return foundItem->second;
 }
