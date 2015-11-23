@@ -34,14 +34,14 @@
                       |        |
        +--------------+  B     |
        |              |        |
-       |              +--+---+-+
+       3              +--+---+-+
        |                 |   |
        |                 |   |
        |                 |   |
        |                 |   |
-+------+                 |   |
++------+                 |   5
 |      |                 |   |
-|A     |                 |   |      +-------+
+|A     |                 8   |      +-------+
 |      |                 |   |      |       |
 +--+---+                 |   +------+   C   |
    |                     |          |       |
@@ -49,7 +49,7 @@
    |                     |               |
    |                     |               |
    |                     |               |
-   |                     |               |
+   9                     |               |
    |                     |               |
    |            +--------++              |
    |            |         |              |
@@ -90,15 +90,15 @@
     4. Say b is shortest and it's 3 miles away from A. Then 0+B = 3; [current weight: 3] (mark 3 for b in chart)
     5. Repeat 4: example b->c is 5 miles apart. weight 3+5=8 (mark 8 for c in chart)
     6. Repeat pattern (currentWeight + next shortest path to unvisited node)
-    7. If an unvisited node cant be reached carry down the value of the unmarked node
+    7. If an unvisited node cant be reached carry down the value of the unmarked node (I'll try and make a better graph)
  
  +-----------------+
  | |A   B   C   D  |
  +----+---+---+-+--+
- |A|0 | 3 | 9 | -  |
- |B|d | 3 | 5 | 12 |
- |C|  | d | 5 | 12 |
- | |  |   | d | 12 |
+ |A|0d| 3 | 9 | -  |
+ |B|  | 3d| 14| 8  |
+ |C|  |   | 14| 8d |
+ | |  |   |d14|    |
  +-+--+---+---+----+
 
     8. Each element will contain the distance class
