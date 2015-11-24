@@ -1,0 +1,48 @@
+Paris, France
+New Delhi, India
+4111.1
+New Delhi, India
+Moscow, Russia
+2708.2
+New Delhi, India
+Sydney, Australia
+6459.6
+New Delhi, India
+Seoul, South Korea
+2927.3
+Seoul, South Korea
+Sydney, Australia
+5138.8
+Seoul, South Korea
+Moscow, Russia
+4134.6
+Paris, France
+Moscow, Russia
+1552.4
+Paris, France
+Pretoria, South Africa
+5354
+Pretoria, South Africa
+Sydney, Australia
+6907.5
+Paris, France
+Brasilia, Brazil
+5369
+Brasilia, Brazil
+Pretoria, South Africa
+4888.1
+Brasilia, Brazil
+Mexico City, Mexcio
+4244.5
+Paris, France
+Washington D.C., USA
+3848.2
+Washington D.C., USA
+Mexico City, Mexcio
+1874.3
+Paris, France
+Ottawa, Canada
+3510.5
+Ottawa, Canada
+Washington D.C., USA
+471.4
