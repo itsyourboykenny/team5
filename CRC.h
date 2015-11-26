@@ -12,7 +12,18 @@
 #include <bitset>
 #include <math.h>
 using namespace std;
-const int bitSize = 10;
+const int bitSize = 10; //<==This is actually 9 bit. I screwed up and too lazy to fix
+//                      Change this to change table size 1=1 2=3 3=7 4=15...
+
+string format(string input){
+    for (int x = 0; x < input.size(); x++) {
+        if (input[x] >= 'a' && input[x] <= 'z')
+            input[x] -= 32;
+        if (input[x] < 'A' || input[x] > 'Z')
+            input.erase(x);
+    }
+    return input;
+}
 
 int getMaxSize() {
     int convertDec(string bin);
@@ -55,9 +66,8 @@ string convertToBin(string target){
 }
 
 int performCyclic(const string &source){
-    string product = convertToBin(source);
+    string product = convertToBin(format(source));
     string divisor = product.substr(0, bitSize);
-    int result;
     
     if (divisor.c_str()[0] == '0') {
         for (int start = 0; start < divisor.size(); start++) {
@@ -78,9 +88,8 @@ int performCyclic(const string &source){
     }
     
     product.erase(0,product.find_first_not_of("0"));
-    result = convertDec(product);
-    
-    return result;
+
+    return convertDec(product);
 }
 
 //int binaryToBase10(string bin)

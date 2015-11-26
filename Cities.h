@@ -16,38 +16,34 @@ using namespace std;
 class cities: public distance{
 private:
     string name = "";
-    vector<distance*> point;
+    vector<distance> point;
     
     
 public:
     int cityCount = 0;
     
-    cities(){point[0] = new distance;}
+    cities(){}
     cities(string nm){name = nm;}
     cities(string nm, cities* dst, double dist)
     {
         name = nm;
-        point[cityCount++]->setCity(dst);
-        point[cityCount]->setDist(dist);
+        point[cityCount++].setCity(dst);
+        point[cityCount].setDist(dist);
     }
     ~cities();
     
     string getName()const {return name;}
     void addCity(cities* dst, double dist);
+    vector<distance> *getDestinations(){return &point;}
 };
-
-cities::~cities(){
-    for (int x = 0; x < point.size(); x++) {
-        delete point[x];
-    }
-}
 
 void cities::addCity(cities* dst, double dist){
     if (cityCount < 1){
-        point[cityCount++] = new distance(dst, dist);
+        point[cityCount].setCity(dst);
+        point[cityCount++].setDist(dist);
     }
     else{
-        point.push_back(new distance(dst, dist));
+        point.push_back(distance(dst, dist));
         cityCount = (int)point.size();
     }
 }

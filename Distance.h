@@ -19,7 +19,7 @@ private:
 public:
     distance();
     distance(cities *cit, double dis){dist = dis; nextCity = cit;}
-    ~distance();
+//    ~distance();
     double getdist()const {return dist;}
     cities *getCity()const {return nextCity;}
     void setDist(double crap){dist = crap;}
