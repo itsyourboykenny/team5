@@ -17,14 +17,14 @@ private:
 	int count;
 
 public:
-	LinkedStack() {topPtr = 0; count = 0;}
+	LinkedStack() { topPtr = 0; count = 0; }
 	LinkedStack(const LinkedStack<ItemType>& aStack);
-	virtual ~LinkedStack() {while (topPtr!=0) {pop();} }
+	virtual ~LinkedStack() { while (topPtr != 0) { pop(); } }
 
-	bool isEmpty() const {return (topPtr == 0);}
+	bool isEmpty() const { return (topPtr == 0); }
 	bool push(const ItemType& newItem);
 	bool pop();
-	ItemType peek() const {return topPtr->getItem();}
+	ItemType peek() const { return topPtr->getItem(); }
 };
 
 /////////////// add to this class so it's not an abstract class
@@ -32,29 +32,29 @@ public:
 template<class ItemType>
 LinkedStack<ItemType>::LinkedStack(const LinkedStack<ItemType>& aStack)
 {
-   Node<ItemType>* origChainPtr = aStack.topPtr;  // original chain is linked list to be copied
+	Node<ItemType>* origChainPtr = aStack.topPtr;  // original chain is linked list to be copied
 
-   count = aStack.count;
-   if (origChainPtr == 0)
-      topPtr = 0;
-   else
-   {
-      topPtr = new Node<ItemType>();				// copy top item
-      topPtr->setItem(origChainPtr->getItem());
+	count = aStack.count;
+	if (origChainPtr == 0)
+		topPtr = 0;
+	else
+	{
+		topPtr = new Node<ItemType>();				// copy top item
+		topPtr->setItem(origChainPtr->getItem());
 
-      Node<ItemType>* newChainPtr = topPtr;			// new chain starts at top
-      origChainPtr = origChainPtr->getNext();		// start with next item in original chain
+		Node<ItemType>* newChainPtr = topPtr;			// new chain starts at top
+		origChainPtr = origChainPtr->getNext();		// start with next item in original chain
 
-      while (origChainPtr != 0)						// copy rest of list
-      {
-         ItemType nextItem = origChainPtr->getItem();
-         Node<ItemType>* newNodePtr = new Node<ItemType>(nextItem);	// create new node
-         newChainPtr->setNext(newNodePtr);							// add new node to list
-         newChainPtr = newChainPtr->getNext();						// walk to next item
-         origChainPtr = origChainPtr->getNext();
-      }
-      newChainPtr->setNext(0);						// set end of list
-   }
+		while (origChainPtr != 0)						// copy rest of list
+		{
+			ItemType nextItem = origChainPtr->getItem();
+			Node<ItemType>* newNodePtr = new Node<ItemType>(nextItem);	// create new node
+			newChainPtr->setNext(newNodePtr);							// add new node to list
+			newChainPtr = newChainPtr->getNext();						// walk to next item
+			origChainPtr = origChainPtr->getNext();
+		}
+		newChainPtr->setNext(0);						// set end of list
+	}
 }
 
 
