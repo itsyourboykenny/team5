@@ -1,6 +1,88 @@
 #ifndef _DIJKSTRA
 #define _DIJKSTRA
 
+#include <vector>
+#include "LinkedGraph.h"
+#include <math.h>
+#include "Cities.h"
+#include "CRC.h"
+#include "Node.h"
+using namespace std;
+const unsigned int TABLE_SIZE = getMaxSize();
+map <int,int> value; //converts hash values to smaller chronological numbers
+
+template <class ItemType>
+class Dijkstra: public LinkedGraph<ItemType>{
+    
+private:
+    cities **hashTable = new cities *[TABLE_SIZE];
+    vector<Node<ItemType>> list; //ItemType is a type double to store the weight
+public:
+    Dijkstra();
+    bool insert(string cityA, double dist, string cityB);
+    bool findShortestPath(string cityA, string CityB);
+    void solve(int hashA, int hashB);
+};
+
+template <class ItemType>
+void Dijkstra<ItemType>::solve(int hashA, int hashB){
+    for (int x = list.begin(); x <= list.end(); x++) {
+        list[x].setWeight(0);
+    }
+}
+
+template <class ItemType>
+bool Dijkstra<ItemType>::insert(string cityA, double dist, string cityB){
+    
+    int tempA = performCyclic(cityA);
+    int tempB = performCyclic(cityB);
+    
+    if ((hashTable)[tempA] == nullptr){
+        (hashTable)[tempA] = new cities(cityA);
+        list.push_back(Node<ItemType> ((hashTable)[tempA]));
+        value.insert(tempA,list.size()-1);
+        this->numberOfVertices++;
+    }
+    
+    if ((hashTable)[tempB] == nullptr){
+        (hashTable)[tempB] = new cities(cityB);
+        list.push_back(Node<ItemType> ((hashTable)[tempB]));
+        value.insert(tempB,list.size()-1);
+        this->numberOfVertices++;
+    }
+    
+    (*hashTable)[tempA].addCity((hashTable)[tempB], dist);
+    (*hashTable)[tempB].addCity((hashTable)[tempA], dist);
+    this->numberOfEdges++;
+    
+}
+
+template <class ItemType>
+bool Dijkstra<ItemType>::findShortestPath(string cityA, string cityB){
+    int hashA, hashB;
+    hashA = performCyclic(cityA);
+    hashB = performCyclic(cityB);
+    
+    if ((hashTable)[hashA] == nullptr){
+        cout<<"City: "<<cityA<<" does not appear in the list" << endl;
+        return false;
+    }
+    else if((hashTable)[hashB] == nullptr){
+        cout<<"City: "<<cityB<<" does not appear in the list" << endl;
+        return false;
+    }
+    
+    cities *start = (hashTable)[hashA];
+    double weight = 0;
+    bool found = false;
+    
+    return true;
+}
+
+
+
+#endif
+
 /*
  0. read in data to the appropriate variable (Two city nodes and it's distance)
  
@@ -109,85 +191,3 @@
  
  Sorry I tried to explain as best as I can.
  */
-
-#include <vector>
-#include "LinkedGraph.h"
-#include <math.h>
-#include "Cities.h"
-#include "CRC.h"
-#include "Node.h"
-using namespace std;
-const unsigned int TABLE_SIZE = getMaxSize();
-map <int,int> value; //converts hash values to smaller chronological numbers
-
-template <class ItemType>
-class Dijkstra: public LinkedGraph<ItemType>{
-    
-private:
-    cities **hashTable = new cities *[TABLE_SIZE];
-    vector<Node<ItemType>> list; //ItemType is a type double to store the weight
-public:
-    Dijkstra();
-    bool insert(string cityA, double dist, string cityB);
-    bool findShortestPath(string cityA, string CityB);
-    void solve(int hashA, int hashB);
-};
-
-template <class ItemType>
-void Dijkstra<ItemType>::solve(int hashA, int hashB){
-    for (int x = list.begin(); x <= list.end(); x++) {
-        list[x].setWeight(0);
-    }
-}
-
-template <class ItemType>
-bool Dijkstra<ItemType>::insert(string cityA, double dist, string cityB){
-    
-    int tempA = performCyclic(cityA);
-    int tempB = performCyclic(cityB);
-    
-    if ((hashTable)[tempA] == nullptr){
-        (hashTable)[tempA] = new cities(cityA);
-        list.push_back(Node<ItemType> ((hashTable)[tempA]));
-        value.insert(tempA,list.size()-1);
-        this->numberOfVertices++;
-    }
-    
-    if ((hashTable)[tempB] == nullptr){
-        (hashTable)[tempB] = new cities(cityB);
-        list.push_back(Node<ItemType> ((hashTable)[tempB]));
-        value.insert(tempB,list.size()-1);
-        this->numberOfVertices++;
-    }
-    
-    (*hashTable)[tempA].addCity((hashTable)[tempB], dist);
-    (*hashTable)[tempB].addCity((hashTable)[tempA], dist);
-    this->numberOfEdges++;
-    
-}
-
-template <class ItemType>
-bool Dijkstra<ItemType>::findShortestPath(string cityA, string cityB){
-    int hashA, hashB;
-    hashA = performCyclic(cityA);
-    hashB = performCyclic(cityB);
-    
-    if ((hashTable)[hashA] == nullptr){
-        cout<<"City: "<<cityA<<" does not appear in the list" << endl;
-        return false;
-    }
-    else if((hashTable)[hashB] == nullptr){
-        cout<<"City: "<<cityB<<" does not appear in the list" << endl;
-        return false;
-    }
-    
-    cities *start = (hashTable)[hashA];
-    double weight = 0;
-    bool found = false;
-    
-    return true;
-}
-
-
-
-#endif
