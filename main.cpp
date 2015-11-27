@@ -8,10 +8,17 @@
 
 #include <iostream>
 #include <string>
+#include<fstream>
+#include<string>
 #include "LinkedGraph.h"
+#include "Dijkstra.h"
+
 
 using namespace std;
 
+bool openInputFile(ifstream&ifs);
+bool readInputFile(ifstream&ifs);
+void convertTolower(string &s);
 void display(string& anItem)
 {
 	cout << "Displaying item - " << anItem << endl;
@@ -61,15 +68,68 @@ void graphTest(LinkedGraph<string>* testGraph)
 
 int main()
 {
+	ifstream inputFile;
+
+	if (!readInputFile(inputFile))
+	{
+		cout << "Cannot open the files. Closing the program!" << endl;
+		return 1;
+	}
+
+	/*
 	LinkedGraph<string>* myGraph = new LinkedGraph<string>();
 
 	cout << "Testing Graph . . . ." << endl << endl;
-	graphTest(myGraph);
+	graphTest(myGraph);*/
 
 	system("PAUSE");
 	return 0;
 }  // end main
 
+bool openInputFile(ifstream&ifs)
+{
+	string filename;
+	cout << "Enter the input filename: ";
+	getline(cin, filename);
+	ifs.open(filename.c_str());
+	return ifs.is_open();
+} // end openInputFile
+
+bool readInputFile(ifstream&ifs)
+{
+	if (!openInputFile(ifs))
+		return false;
+	string cityA, cityB;
+	double dist;
+	Dijkstra<string> *path = 0;
+	while (true)
+	{		
+		if (!getline(ifs, cityA,','))
+			break;
+		if (!getline(ifs, cityB,','))
+			break;
+		if (!(ifs >> dist))
+			break;
+		ifs.ignore();
+
+		cout << cityA << " " << cityB << " " << dist << endl;
+		convertTolower(cityA);
+		convertTolower(cityB);
+		cout << cityA << " " << cityB << " " << dist << endl;
+		path->add(cityA, dist, cityB);
+	}
+
+	return true;
+
+} // end readInputFile
+
+void convertTolower(string &s)
+{
+	for (int i = 0; i < s.length(); i++)
+	{
+		s[i] = tolower(s[i]);
+	}
+}
 /*
 Testing Graph . . . .
 

@@ -5,7 +5,7 @@ Written by C. Lee-Klawender
 
 The DACmap is the type used in LinkedGraph and Vertex classes
 
-These classes wwere written so you don't have to understand how to use
+These classes were written so you don't have to understand how to use
 the C++ STL map nor its iterator, and has easy-to-use function for access
 */
 using namespace std;
@@ -95,10 +95,12 @@ ItemType DACmap<KeyType, ItemType>::getItem(const KeyType& searchKey) const
 template <class KeyType, class ItemType>
 bool DACmap<KeyType, ItemType>::contains(const KeyType& searchKey) const
 {
-	typename map<KeyType, ItemType>::const_iterator itemIter = dacMap.begin();
+	typename map<KeyType, ItemType>::const_iterator itemIter = dacMap.begin(); // the dacMap is empty
+	
 	// CHANGE TO SEARCH IN A LOOP WITH ITERATOR?
 	for (; itemIter != dacMap.end(); ++itemIter)
 	{
+
 		if (itemIter->first == searchKey)
 		{
 			return true;
