@@ -15,8 +15,8 @@ const unsigned int TABLE_SIZE = getMaxSize();
 
 struct my_cities{
     cities * city = nullptr;
-    bool visited = false;
-    double weight = 0;
+    bool done = false;
+    double weight = 1.0/0.0;
 };
 
 template <class ItemType>
@@ -26,6 +26,7 @@ private:
     DACmap<int, cities*> theList;
     cities **hashTable = new cities *[TABLE_SIZE]; //Not using this anymore
     vector<Node<ItemType>> list; //ItemType is a type double to store the weight
+    bool returnWeight(){}
 public:
     Dijkstra();
     bool insert(string cityA, double dist, string cityB);
@@ -72,10 +73,10 @@ bool Dijkstra<ItemType>::insert(string cityA, double dist, string cityB){ //CHAN
 //        value.insert(pair<int,int>(tempB,list.size()-1));
 //        this->numberOfVertices++;
 //    }
-    
-    (*hashTable)[tempA].addCity((hashTable)[tempB], dist);
-    (*hashTable)[tempB].addCity((hashTable)[tempA], dist);
-    this->numberOfEdges++;
+//    
+//    (*hashTable)[tempA].addCity((hashTable)[tempB], dist);
+//    (*hashTable)[tempB].addCity((hashTable)[tempA], dist);
+//    this->numberOfEdges++;
     
 }
 
@@ -91,6 +92,16 @@ bool Dijkstra<ItemType>::findShortestPath(string cityA, string cityB){
         return false;
     
     vector<my_cities> list;
+    
+    theList.traverse(/*bitchClassGoesHere*/);
+    
+    for (x = list.size(); x != list.end(); x++) {
+        list[x].
+    }
+    
+//    Recalculate weight
+//    Choose lightest
+//    Mark Done
     
     bool found = false;
     
