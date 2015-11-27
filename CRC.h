@@ -12,7 +12,7 @@
 #include <bitset>
 #include <math.h>
 using namespace std;
-const int bitSize = 10; //<==This is actually 9 bit. I screwed up and too lazy to fix
+const int bitSize = 17; //<==This is actually 16 bit. I screwed up and too lazy to fix
 //                      Change this to change table size 1=1 2=3 3=7 4=15...
 
 string format(string input){
