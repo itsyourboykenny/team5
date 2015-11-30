@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <map>
-#include <bootstrap.h>
 #include "LinkedGraph.h"
 #include <math.h>
 #include "CRC.h"
@@ -13,95 +12,96 @@ using namespace std;
 const double inf = 1 << 30;
 
 
-template <class ItemType>
-class Dijkstra: public LinkedGraph<ItemType>{
+template <class LabelType>
+class Dijkstra: public LinkedGraph<LabelType>{
     
 private:
     
-//  Decided to use maps instead since it seems cleaner than tables. This wont affect DACmap at all
-    map<int, Vertex<ItemType>*> theList;
-    map<int, Vertex<ItemType>*> theListIterator;
+    double Totalweight = 0;
     
-    vector<Vertex<ItemType>> results;
-    vector<double> weight;
+//    Using this to make chart
+//    alternative is to use vector<vector Vertex>
+    class Var{
+    public:
+        Vertex<LabelType> city;
+        double weight = inf;
+        
+        Var(const Vertex<LabelType> copy){city = copy;}
+        ~Var();
+    };
+    
+    vector<Var*> results;
+    
 public:
     Dijkstra(){results.resize(0);}
     Dijkstra(const Dijkstra &source){/*\(. .\) to the windowww.. (/. .)/ to the walls*/;}
     ~Dijkstra(){reset();}
-    bool insert(string cityA, double dist, string cityB);
+    bool add(LabelType start, LabelType end, int edgeWeight = 0);
     bool findShortestPath(string cityA, string CityB);
-    void solve(int hashA, int hashB);
-    void readPath(ItemType stuff);
-    void reset(){theList.clear();results.resize(0);}
+    void solve();
+    void readPath(LabelType stuff);
+    void reset(){this->vertices.clear();results.clear();this->numberOfVertices=this->numberOfEdges=0;}
 };
 
-template <class ItemType>
-void Dijkstra<ItemType>::solve(int hashA, int hashB){
-
-}
-
-template <class ItemType>
-bool Dijkstra<ItemType>::insert(string cityA, double dist, string cityB){ //CHANGE THIS TO ADD()
+template <class LabelType>
+bool Dijkstra<LabelType>::add(LabelType start, LabelType end, int edgeWeight){
     
-    int tempA = performCyclic(cityA);
-    int tempB = performCyclic(cityB);
+    int tempA = performCyclic(start);
+    int tempB = performCyclic(end);
     
     //########### Create a new vertex if it doesnt exist ###########
-    theListIterator = theList.begin();
-    if (theListIterator.find(tempA)==theList.end()){
-        theList[tempA] = new Vertex<ItemType>;
-        this->numberOfVertices++;
+    this->pvertexIterator = this->vertices.begin();
+    if (this->pvertexIterator.find(tempA)==this->vertices.end()){
+        this->vertices[tempA] = new Vertex<LabelType>;
+        this->numberOfthis->vertices++;
     }
-    theListIterator = theList.begin();
-    if (theListIterator.find(tempB)==theList.end()){
-        theList[tempB] = new Vertex<ItemType>;
-        this->numberOfVertices++;
+    this->pvertexIterator = this->vertices.begin();
+    if (this->pvertexIterator.find(tempB)==this->vertices.end()){
+        this->vertices[tempB] = new Vertex<LabelType>;
+        this->numberOfthis->vertices++;
     }
     
 //    ########### Connects the two vertex ###########
-    theList[tempA]->connect(theList[tempB],dist);
-    theList[tempB]->connect(theList[tempA],dist);
+    this->vertices[tempA]->connect(this->vertices[tempB],edgeWeight);
+    this->vertices[tempB]->connect(this->vertices[tempA],edgeWeight);
     
     this->numberOfEdges++;
     
 }
 
-template <class ItemType>
-void Dijkstra<ItemType>::readPath(ItemType stuff){
+template <class LabelType>
+void Dijkstra<LabelType>::readPath(LabelType stuff){
     int temp = performCyclic(stuff);
-    results.push_back(*(theList[temp]));
+    results.push_back(new Var(*(this->vertices[temp])));
 }
 
-template <class ItemType>
-bool Dijkstra<ItemType>::findShortestPath(string cityA, string cityB){
+template <class LabelType>
+bool Dijkstra<LabelType>::findShortestPath(string cityA, string cityB){
     int hashA, hashB;
     hashA = performCyclic(cityA);
     hashB = performCyclic(cityB);
     
 //  ########### Make sure I'm not retarded ###########
-    theListIterator = theList.begin();
-    if (theListIterator.find(hashA) == theList.end())
+    this->pvertexIterator = this->vertices.begin();
+    if (this->pvertexIterator.find(hashA) == this->vertices.end())
         return false;
-    theListIterator = theList.begin();
-    if (theListIterator.find(hashB) == theList.end())
+    this->pvertexIterator = this->vertices.begin();
+    if (this->pvertexIterator.find(hashB) == this->vertices.end())
         return false;
     
-//  ########### re-reads all cities starting at the selected city ###########
-    this->breadthFirstTraversal(*(theList[hashA]),&readPath);
-    
-//    ########### Initialize all weight to inf ###########
-    for (int x = 0; x < results.size(); x++) {
-        weight.push_back(inf);
-    }
+//  ########### re-reads all cities starting at the selected city into vertices ###########
+    this->breadthFirstTraversal(*(this->vertices[hashA]),&readPath); //breadthFirst because it gets it in order of adjacency
     
     
-//    Recalculate weight
-//    Choose lightest
-//    Mark Done
-    
-    bool found = false;
+    solve();
     
     return true;
+}
+
+
+template <class LabelType>
+void Dijkstra<LabelType>::solve(){
+    
 }
 
 
