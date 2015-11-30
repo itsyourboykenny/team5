@@ -14,14 +14,18 @@ const int inf = 1 << 30;
 template <class LabelType>
 class Dijkstra : public LinkedGraph<LabelType>{
 private:
+    
     struct item{
         int weight = 0;
         bool done = false;
     };
+    
     map<LabelType, item> sortedList;
     vector<LabelType> chart;
     ofstream *ptrOut;
-    void addToChart(LabelType name, int weight, bool done){}
+    
+    void readPath(LabelType &stuff);
+    vector<LabelType> solve(LabelType end);
     
 public:
     Dijkstra(){ reset();ptrOut = nullptr; }
@@ -29,9 +33,7 @@ public:
     Dijkstra(const Dijkstra &source){/*\(. .\) to the windowww.. (/. .)/ to the walls*/; }
     ~Dijkstra(){ reset(); }
     bool add(LabelType start, LabelType end, int edgeWeight);
-    Vertex<LabelType>* findShortestPath(LabelType cityA, LabelType cityB);
-    Vertex<LabelType>* solve(LabelType end);
-    void readPath(LabelType stuff);
+    vector<LabelType> findShortestPath(LabelType cityA, LabelType cityB);
     void reset(){ this->vertices.clear(); chart.clear(); sortedList.clear(); this->numberOfVertices = this->numberOfEdges = 0; }
     void refresh(){sortedList.clear();chart.clear();} //Call this before calculation
 };
@@ -59,36 +61,40 @@ bool Dijkstra<LabelType>::add(LabelType start, LabelType end, int edgeWeight){
 }
 
 template <class LabelType>
-void Dijkstra<LabelType>::readPath(LabelType stuff){
-    item temp = {inf,false};
+void Dijkstra<LabelType>::readPath(LabelType &stuff){
+    item temp;
+    temp.weight = inf;
+    temp.done = false;
     chart.push_back(stuff);
     sortedList[stuff] = temp;
 }
 
 template <class LabelType>
-Vertex<LabelType>* Dijkstra<LabelType>::findShortestPath(LabelType cityA, LabelType cityB){
-    
+vector<LabelType> Dijkstra<LabelType>::findShortestPath(LabelType cityA, LabelType cityB){
     //  ########### Make sure I'm not retarded ###########
     if (!this->vertices.contains(cityA))
-        return false;
+        cout << cityA << " does not exist" << endl;
     if (!this->vertices.contains(cityB))
-        return false;
+        cout << cityB << " does not exist" << endl;
     
     //  ########### re-reads all cities starting at the selected city into vertices ###########
-    this->breadthFirstTraversal(this->vertices.getMap()[cityA], &readPath); //breadthFirst because it gets it in order of adjacency
+    this->breadthFirstTraversal((this->vertices.getMap())[cityA], &readPath); //breadthFirst because it gets it in order of adjacency
     
-    return solve();
+    return solve(cityB);
 }
 
 
 template <class LabelType>
-Vertex<LabelType>* Dijkstra<LabelType>::solve(LabelType end){
+vector<LabelType> Dijkstra<LabelType>::solve(LabelType end){
 
     int Totalweight = 0;
     int tempWeight = 0;
     int x = 0;
+    vector<LabelType> returnThis; //for debugging
     sortedList[chart[0]].done = true;
     sortedList[chart[0]].weight = 0;
+    
+    returnThis.push_back(chart[0]);
     
     while(!sortedList[end].done && x < chart.size()) {
 //        Compare against all possible paths
@@ -112,7 +118,10 @@ Vertex<LabelType>* Dijkstra<LabelType>::solve(LabelType end){
         sortedList[chart[smallPos]].done = true;
         Totalweight += sortedList[chart[smallPos]].weight;
         x++;
+        
+        returnThis.push_back(chart[smallPos]);
     }
+    return returnThis;
 }
 
 
