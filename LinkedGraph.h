@@ -61,7 +61,7 @@ public:
 	//---> YOU DECLARE HERE (AND WRITE BELOW) THE MEMBER FUNCTION TO
 	//         WRITE THE GRAPH TO A TEXT FILE (SUGGEST TO PASS AN
 	//        ofstream TO THIS !
-
+	void writeToFile(Vertex<LabelType>* vertex, ofstream& file);
 
 }; // end GraphInterface
 
@@ -217,8 +217,7 @@ void visit(LabelType&))
 
 template<class LabelType>
 void LinkedGraph<LabelType>::
-breadthFirstTraversalHelper(Vertex<LabelType>* startVertex,
-void visit(LabelType&))
+breadthFirstTraversalHelper(Vertex<LabelType>* startVertex, void visit(LabelType&))
 {
 	queue<Vertex<LabelType>*> vertexQueue;
 	LabelType startLabel = startVertex->getLabel();
@@ -281,4 +280,9 @@ findOrCreateVertex(const LabelType& vertexLabel)
 //         WRITE THE GRAPH's vertices and its adjacency list
 //         TO A TEXT FILE (SUGGEST TO PASS AN
 //         ofstream TO THIS !
+/*template<class LabelType>
+Vertex<LabelType>* LinkedGraph<LabelType>::writeToFile(Vertex<LabelType>* vertex, ofstream& file)
+{
+
+}*/
 #endif

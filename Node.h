@@ -10,7 +10,7 @@ class Node
 {
 private:
 	ItemType        item;
-    double          weight=0;
+	double          weight = 0;
 	Node<ItemType>* next;
 
 public:
@@ -20,7 +20,7 @@ public:
 	void setNext(Node<ItemType>* nextNodePtr)	{ next = nextNodePtr; }
 	ItemType getItem() const					{ return item; }
 	Node<ItemType>* getNext() const				{ return next; }
-    void setWeight(double stuff)                {weight = stuff;}
+	void setWeight(double stuff)                { weight = stuff; }
 };
 
 #endif
