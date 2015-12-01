@@ -11,6 +11,10 @@
 using namespace std;
 const int inf = 1 << 30;
 
+template <LabelType>
+map<LabelType,vector<LabelType>*> ourList;
+map<LabelType,vector<LabelType>*> ourListIterator;
+
 template <class LabelType>
 class Dijkstra : public LinkedGraph<LabelType>{
 private:
