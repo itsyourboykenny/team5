@@ -11,20 +11,11 @@
 using namespace std;
 const int inf = 1 << 30;
 
-template <LabelType>
-map<LabelType,vector<LabelType>*> ourList;
-map<LabelType,vector<LabelType>*> ourListIterator;
-
 template <class LabelType>
 class Dijkstra : public LinkedGraph<LabelType>{
 private:
-    struct item
-	{
-        int weight = 0;
-        bool done = false;
-    };
-    map<LabelType, item> sortedList;
-    vector<LabelType> chart;
+    map<LabelType,Vertex<LabelType>*> localList;
+    typename map<LabelType,Vertex<LabelType>*>::iterator localIterator;
     ofstream *ptrOut;
     
 public:
@@ -33,29 +24,30 @@ public:
     Dijkstra(const Dijkstra &source){/*\(. .\) to the windowww.. (/. .)/ to the walls*/; }
     ~Dijkstra(){ reset(); }
     bool add(LabelType start, LabelType end, int edgeWeight);
-    vector<LabelType>* findShortestPath(LabelType cityA, LabelType cityB);
-    vector<LabelType>* solve(LabelType end);
+    vector<LabelType> findShortestPath(LabelType cityA, LabelType cityB);
+    vector<LabelType> solve(LabelType start, LabelType end);
     void readPath(LabelType stuff);
-    void reset(){ this->vertices.clear(); chart.clear(); sortedList.clear(); this->numberOfVertices = this->numberOfEdges = 0; }
-    void refresh(){sortedList.clear();chart.clear();} //Call this before calculation
+    void reset(){ localList.clear();this->vertices.clear(); this->numberOfVertices = this->numberOfEdges = 0; }
+    void refresh(){} //Call this before calculation
 };
 
 template <class LabelType>
 bool Dijkstra<LabelType>::add(LabelType start, LabelType end, int edgeWeight){
     
     //########### Create a new vertex if it doesnt exist ###########
-    if (this->vertices.contains(start)){
-        this->vertices.add(start, new Vertex<LabelType>(start));
+    localIterator = localList.find(start);
+    if (localIterator == localList.end()) {
+        localList[start] = new Vertex<LabelType>(start);
         this->numberOfVertices++;
     }
-    if (this->vertices.contains(end)){
-        this->vertices.add(end, new Vertex<LabelType>(end));
-        this->numberOfVertices++;
+    localIterator = localList.find(end);
+    if (localIterator == localList.end()){
+        localList[end] = new Vertex<LabelType>(end);
     }
     
     //    ########### Connects the two vertex ###########
-    (this->vertices.getMap())[start]->connect(end,edgeWeight);
-    (this->vertices.getMap())[end]->connect(start,edgeWeight);
+    localList[start]->connect(end,edgeWeight);
+    localList[end]->connect(start,edgeWeight);
     
     this->numberOfEdges++;
     
@@ -63,70 +55,74 @@ bool Dijkstra<LabelType>::add(LabelType start, LabelType end, int edgeWeight){
 }
 
 template <class LabelType>
-void Dijkstra<LabelType>::readPath(LabelType stuff)
-{
-    item temp = {inf,false};
-    chart.push_back(stuff);
-    sortedList[stuff] = temp;
-}
-
-template <class LabelType>
-vector<LabelType>* Dijkstra<LabelType>::findShortestPath(LabelType cityA, LabelType cityB){
+vector<LabelType> Dijkstra<LabelType>::findShortestPath(LabelType cityA, LabelType cityB){
    
     if (!this->vertices.contains(cityA))
-        return false;
-	if (!this->vertices.contains(cityB))
-		return false;
+        cout << "Doesnt Exist" << endl;
+    if (!this->vertices.contains(cityB))
+        cout << "Doesnt Exist" << endl;
     
-    return solve(cityB);
+    return solve(cityA, cityB);
 }
 
 
 template <class LabelType>
-vector<LabelType>* Dijkstra<LabelType>::solve(LabelType end)
+vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
 {
+    map<LabelType,int> weight;
 
     int Totalweight = 0;
     int tempWeight = 0;
-    int x = 0;
 	vector<LabelType> returnThis;
-    sortedList[chart[0]].done = true;
-    sortedList[chart[0]].weight = 0;
-
-	returnThis.push_back(chart[0]);
+    vector<LabelType> queue;
     
-    while(!sortedList[end].done && x < chart.size()) 
-	{
-//        Compare against all possible paths
-        for (int y = 0; y < (this->vertices.getMap()[chart[x]])->getNumberOfNeighbors(); y++) 
-		{
-            LabelType temp = (this->vertices.getMap()[chart[x]])->getNextNeighbor();
-            tempWeight = (this->vertices.getMap()[chart[x]])->getEdgeWeight(temp);
-            if ((sortedList[temp]).weight > Totalweight+tempWeight)
-                if (!sortedList[temp].done)
-                    (sortedList[temp]).weight = Totalweight+tempWeight;
-        }
-//        Determines the lowest cost, assigns if it's smaller, but not if it's marked done
-        int smallest = inf;
-        int smallPos;
-        for (int y = 0; y < chart.size(); y++) 
-		{
-            if (sortedList[chart[y]].weight < smallest && !sortedList[chart[y]].done) 
-			{
-                smallest = sortedList[chart[y]].weight;
-                smallPos = y;
-            }
-        }
-		cout << chart[smallPos] << endl;
-//        Mark shortest distance as done
-        sortedList[chart[smallPos]].done = true;
-        Totalweight += sortedList[chart[smallPos]].weight;
-        x++;
+    localList[start]->visit();
+    weight[start] = 0;
 
-		returnThis.push_back(chart[smallPos]);
+    returnThis.push_back(localList[start]->getLabel());
+    queue.push_back(localList[start]->getLabel());
+    localIterator = localList.find(queue.front());
+    
+    while(!localList[end]->isVisited() && !queue.empty())
+	{
+//        Some stuff needed to find smallest while
+        Vertex<LabelType> * smallest = nullptr;
+        int foo = inf;
+        
+//        Compare against all possible paths
+        for (int y = 0; y < (localList[localIterator->first]->getNumberOfNeighbors()); y++)
+		{
+//            Gets initial crap
+            LabelType temp = localList[localIterator->first]->getNextNeighbor();
+            tempWeight = localList[localIterator->first]->getEdgeWeight(temp);
+            weight[temp] = inf;
+
+//            If current weight is lower than total weight, change it
+//            Needs to also store originating node. But i'm too lazy to right now
+            if (weight[temp] > Totalweight+tempWeight)
+                if (!localList[temp]->isVisited())
+                    weight[temp] = Totalweight+tempWeight;
+//            Determine smallest weight. The easier way
+            if (weight[temp]<foo){
+                smallest = localList[temp];
+                foo = weight[temp];
+            }
+//            Mark shortest distance as done
+            if (smallest == nullptr)
+                cout<<"Something is wrong" << endl;
+            else
+                smallest->visit();
+        }
+//        Bunch of crap to prep for the next iteration
+        queue.push_back(smallest->getLabel());
+        queue.erase(queue.begin());
+        Totalweight += weight[queue.front()];
+        localIterator = localList.find(queue.front());
+        returnThis.push_back(localIterator->first);
     }
+    
 	cout << "Total Distance Traveled " << Totalweight << " miles" << endl;
-	return &returnThis;
+	return returnThis;
 }
 
 #endif
