@@ -98,6 +98,7 @@ int main()
 			<< "5. Show possible delivery paths" << endl
 			<< "6. find the shortest delivery route" << endl;
 		cin >> choice;
+		cin.ignore();
 		while (choice < 1 || choice > 7 || cin.fail())
 		{
 			cout << "ERROR: Please enter a choice between 1 and 6: ";
@@ -124,6 +125,7 @@ int main()
 		}
 		cout << "Would you like to perform another action? (1 for yes, 0 for no): ";
 		cin >> answer;
+		cin.ignore();
 		while (cin.fail())
 		{
 			cout << "ERROR: Please enter 1 or 0: ";
@@ -153,6 +155,7 @@ bool readInputFile(ifstream&ifs, Dijkstra<string> *path)
 {
 	if (!openInputFile(ifs))
 		return false;
+	cout << "**" << endl;
 	string cityA, cityB;
 	int dist;
 	path = new Dijkstra<string>;
@@ -190,10 +193,10 @@ void newPath(Dijkstra<string>* path)
 {
 	string cityA,
 		cityB;
-	int dist;
+	int dist; 
 	cout << "Please indicate which two cities you wish to connect : " << endl
 		<< "City A : ";
-	getline(cin,cityA);
+	getline(cin, cityA);	
 	cout << "City B : ";
 	getline(cin, cityB);
 	cout << "Distance between them : ";
@@ -211,7 +214,7 @@ void removePath(Dijkstra<string>* path)
 	getline(cin, cityB);
 	path->remove(cityA, cityB);
 }
-void undoRemoval()
+void undoRemoval(Dijkstra<string> *path)
 {
 
 }
