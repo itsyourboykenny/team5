@@ -98,6 +98,7 @@ int main()
 			<< "5. Show possible delivery paths" << endl
 			<< "6. find the shortest delivery route" << endl;
 		cin >> choice;
+		cin.ignore(80, '\n');
 		while (choice < 1 || choice > 7 || cin.fail())
 		{
 			cout << "ERROR: Please enter a choice between 1 and 6: ";
@@ -115,7 +116,7 @@ int main()
 			break;
 		case 3: removePath(delivery);
 			break;
-		case 4: undoRemoval(delivery);
+		case 4: //undoRemoval(delivery);
 			break;
 		case 5: showPaths(delivery);
 			break;
@@ -124,10 +125,12 @@ int main()
 		}
 		cout << "Would you like to perform another action? (1 for yes, 0 for no): ";
 		cin >> answer;
+		cin.ignore(80, '\n');
 		while (cin.fail())
 		{
 			cout << "ERROR: Please enter 1 or 0: ";
 			cin >> answer;
+			cin.ignore(80, '\n');
 		}
 	}
 
@@ -144,6 +147,7 @@ bool openInputFile(ifstream&ifs)
 {
 	string filename;
 	cout << "Enter the input filename: ";
+
 	getline(cin, filename);
 	ifs.open(filename.c_str());
 	return ifs.is_open();
@@ -156,7 +160,7 @@ bool readInputFile(ifstream&ifs, Dijkstra<string> *path)
 	string cityA, cityB;
 	int dist;
 	path = new Dijkstra<string>;
-	while (true)
+	while (!(ifs.eof()))
 	{
 		if (!getline(ifs, cityA, ','))
 			break;
@@ -169,7 +173,6 @@ bool readInputFile(ifstream&ifs, Dijkstra<string> *path)
 		cout << cityA << " " << cityB << " " << dist << endl;
 		/*convertTolower(cityA);
 		convertTolower(cityB);*/
-		cout << cityA << " " << cityB << " " << dist << endl;
 		path->add(cityA, cityB, dist);
 	}
 
@@ -193,11 +196,15 @@ void newPath(Dijkstra<string>* path)
 	int dist;
 	cout << "Please indicate which two cities you wish to connect : " << endl
 		<< "City A : ";
-	getline(cin,cityA);
+	getline(cin, cityA);
+	cout << endl;
 	cout << "City B : ";
 	getline(cin, cityB);
+	cout << endl;
 	cout << "Distance between them : ";
 	cin >> dist;
+	cin.ignore(80, '\n');
+	cout << endl;
 	path->add(cityA, cityB, dist);
 }
 void removePath(Dijkstra<string>* path)
@@ -211,10 +218,10 @@ void removePath(Dijkstra<string>* path)
 	getline(cin, cityB);
 	path->remove(cityA, cityB);
 }
-void undoRemoval()
+/*void undoRemoval()
 {
 
-}
+}*/
 void showPaths(Dijkstra<string>* path)
 {
 	cout << "City A    City B    distance" << endl

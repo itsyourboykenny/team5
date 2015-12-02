@@ -1,16 +1,16 @@
-Paris,New Delhi,4111.1
-New Delhi,Moscow,2708.2
-New Delhi,Sydney,6459.6
-New Delhi,Seoul,2927.3
-Seoul,Sydney,5138.8
-Seoul,Moscow,4134.6
-Paris,Moscow,1552.4
+Paris,New Delhi,4111
+New Delhi,Moscow,2708
+New Delhi,Sydney,6459
+New Delhi,Seoul,2927
+Seoul,Sydney,5138
+Seoul,Moscow,4134
+Paris,Moscow,1552
 Paris,Pretoria,5354
-Pretoria,Sydney,6907.5
+Pretoria,Sydney,6907
 Paris,Brasilia,5369
-Brasilia,Pretoria,4888.1
-Brasilia,Mexico City,4244.5
-Paris,Washington D.C.,3848.2
-Washington D.C.,Mexico City,1874.3
-Paris,Ottawa,3510.5
-Ottawa,Washington D.C.,471.4
+Brasilia,Pretoria,4888
+Brasilia,Mexico City,4244
+Paris,Washington D.C.,3848
+Washington D.C.,Mexico City,1874
+Paris,Ottawa,3510
+Ottawa,Washington D.C.,471
