@@ -96,7 +96,6 @@ bool DACmap<KeyType, ItemType>::contains(const KeyType& searchKey) const
 	// CHANGE TO SEARCH IN A LOOP WITH ITERATOR?
 	for (itemIter; itemIter != dacMap.end(); ++itemIter)
 	{
-
 		if (itemIter->first == searchKey)
 		{
 			return true;

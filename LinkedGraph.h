@@ -281,8 +281,8 @@ findOrCreateVertex(const LabelType& vertexLabel)
 //         TO A TEXT FILE (SUGGEST TO PASS AN
 //         ofstream TO THIS !
 /*template<class LabelType>
-Vertex<LabelType>* LinkedGraph<LabelType>::writeToFile(Vertex<LabelType>* vertex, ofstream& file)
+void LinkedGraph<LabelType>::writeToFile(Vertex<LabelType>* vertex, ofstream& file)
 {
-
+	ofstream << vertex;
 }*/
 #endif
