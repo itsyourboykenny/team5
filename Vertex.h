@@ -24,7 +24,6 @@ class Vertex
 private:
 	LabelType vertexLabel;
 	bool      visited;  // True if the vertex is visited
-
 	DACmap<LabelType, Edge<LabelType> >  adjacencyList;
 	DACmapIterator<LabelType, Edge<LabelType> > *adjacentIterator;
 
@@ -85,6 +84,7 @@ Vertex<LabelType>::
 Vertex(LabelType label) : vertexLabel(label), visited(false)
 {
 	adjacentIterator = 0;
+
 }  // end constructor
 
 template<class LabelType>

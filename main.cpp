@@ -33,60 +33,23 @@ void display(string& anItem)
 	cout << "Displaying item - " << anItem << endl;
 }
 
-void graphTest(LinkedGraph<string>* testGraph)
-{
-	string A("A");
-	string B("B");
-	string C("C");
-	string D("D");
-	string E("E");
-	string F("F");
-	string G("G");
-	string H("H");
-	string I("I");
-	string J("J");
-	string K("K");
-	string L("L");
-	string M("M");
-	string N("N");
-
-	testGraph->add(A, B, 0);
-	testGraph->add(A, C, 0);
-	testGraph->add(A, D, 0);
-	testGraph->add(B, E, 0);
-	testGraph->add(B, F, 0);
-	testGraph->add(C, G, 0);
-	testGraph->add(D, H, 0);
-	testGraph->add(D, I, 0);
-	testGraph->add(F, J, 0);
-	testGraph->add(G, K, 0);
-	testGraph->add(G, L, 0);
-	testGraph->add(H, M, 0);
-	testGraph->add(I, M, 0);
-	testGraph->add(I, N, 0);
-
-	cout << "Vertices :" << testGraph->getNumVertices() << endl;
-	cout << "Edges :" << testGraph->getNumEdges() << endl;
-
-	cout << "\nDepth-first traversal (should be A B E F J C G K L D H M I N):" << endl;
-	testGraph->depthFirstTraversal(A, display);
-
-	cout << "\nBreadth-first traversal (should be A B C D E F G H I J K L M N):" << endl;
-	testGraph->breadthFirstTraversal(A, display);
-}  // end graphTest
 
 int main()
 {
 	Dijkstra<string>* delivery = new Dijkstra<string>;
 	ifstream inputFile;
 	/*
-
 	7) Please indicate the file name you wish the route to have
-		File Name: ____
+	File Name: ____
 	*/
-	
+
 	bool answer = 1;
 	int choice;
+	if (!readInputFile(inputFile, delivery))
+	{
+		cout << "Cannot open the files. Closing the program!" << endl;
+		return 1;
+	}
 	while (answer)
 	{
 		cout << "Welcome to  the delivery simulation!" << endl
@@ -107,11 +70,11 @@ int main()
 		switch (choice)
 		{
 		case 1: if (!readInputFile(inputFile, delivery))
-			{
-				cout << "Cannot open the files. Closing the program!" << endl;
-				return 1;
-			}
-			break;
+		{
+			cout << "Cannot open the files. Closing the program!" << endl;
+			return 1;
+		}
+				break;
 		case 2: newPath(delivery);
 			break;
 		case 3: removePath(delivery);
@@ -157,10 +120,9 @@ bool readInputFile(ifstream&ifs, Dijkstra<string> *path)
 {
 	if (!openInputFile(ifs))
 		return false;
-	cout << "**" << endl;
 	string cityA, cityB;
 	int dist;
-	path = new Dijkstra<string>;
+
 	while (!(ifs.eof()))
 	{
 		if (!getline(ifs, cityA, ','))
@@ -194,7 +156,7 @@ void newPath(Dijkstra<string>* path)
 {
 	string cityA,
 		cityB;
-	int dist; 
+	int dist;
 	cout << "Please indicate which two cities you wish to connect : " << endl
 		<< "City A : ";
 	getline(cin, cityA);
@@ -225,7 +187,6 @@ void removePath(Dijkstra<string>* path)
 void undoRemoval(Dijkstra<string> *path)
 >>>>>>> 9d522bc87d863b88beecc375b0cb1527b9565215
 {
-
 }*/
 void showPaths(Dijkstra<string>* path)
 {
@@ -248,38 +209,3 @@ void findShortestPath(Dijkstra<string>* path)
 	getline(cin, cityB);
 	path->findShortestPath(cityA, cityB);
 }
-/*
-Testing Graph . . . .
-Vertices :14
-Edges :14
-Depth-first traversal (should be A B E F J C G K L D H M I N):
-Displaying item - A
-Displaying item - B
-Displaying item - E
-Displaying item - F
-Displaying item - J
-Displaying item - C
-Displaying item - G
-Displaying item - K
-Displaying item - L
-Displaying item - D
-Displaying item - H
-Displaying item - M
-Displaying item - I
-Displaying item - N
-Breadth-first traversal (should be A B C D E F G H I J K L M N):
-Displaying item - A
-Displaying item - B
-Displaying item - C
-Displaying item - D
-Displaying item - E
-Displaying item - F
-Displaying item - G
-Displaying item - H
-Displaying item - I
-Displaying item - J
-Displaying item - K
-Displaying item - L
-Displaying item - M
-Displaying item - N
-*/
