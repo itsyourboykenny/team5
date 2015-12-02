@@ -34,7 +34,6 @@ public:
 template <class LabelType>
 bool Dijkstra<LabelType>::add(LabelType start, LabelType end, int edgeWeight){
     
-<<<<<<< HEAD
     /*/########### Create a new vertex if it doesnt exist ###########
     if (this->vertices.contains(start)){
         this->vertices.add(start, new Vertex<LabelType>(start));
@@ -48,25 +47,7 @@ bool Dijkstra<LabelType>::add(LabelType start, LabelType end, int edgeWeight){
     //    ########### Connects the two vertex ###########
 	
     //(this->vertices.getMap())[end]->connect(start,edgeWeight); NOT NEEDED
-=======
-    //########### Create a new vertex if it doesnt exist ###########
-    localIterator = localList.find(start);
-    if (localIterator == localList.end()) {
-        localList[start] = new Vertex<LabelType>(start);
-        this->numberOfVertices++;
-    }
-    localIterator = localList.find(end);
-    if (localIterator == localList.end()){
-        localList[end] = new Vertex<LabelType>(end);
-    }
-    
-    //    ########### Connects the two vertex ###########
-    localList[start]->connect(end,edgeWeight);
-    localList[end]->connect(start,edgeWeight);
-    
-    this->numberOfEdges++;
->>>>>>> 9d522bc87d863b88beecc375b0cb1527b9565215
-    
+
     //this->numberOfEdges++;
 	//THIS IS ALL WE NEED:
 	this->LinkedGraph<LabelType>::add(start, end, edgeWeight);

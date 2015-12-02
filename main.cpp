@@ -98,11 +98,7 @@ int main()
 			<< "5. Show possible delivery paths" << endl
 			<< "6. find the shortest delivery route" << endl;
 		cin >> choice;
-<<<<<<< HEAD
 		cin.ignore(80, '\n');
-=======
-		cin.ignore();
->>>>>>> 9d522bc87d863b88beecc375b0cb1527b9565215
 		while (choice < 1 || choice > 7 || cin.fail())
 		{
 			cout << "ERROR: Please enter a choice between 1 and 6: ";
@@ -129,11 +125,7 @@ int main()
 		}
 		cout << "Would you like to perform another action? (1 for yes, 0 for no): ";
 		cin >> answer;
-<<<<<<< HEAD
 		cin.ignore(80, '\n');
-=======
-		cin.ignore();
->>>>>>> 9d522bc87d863b88beecc375b0cb1527b9565215
 		while (cin.fail())
 		{
 			cout << "ERROR: Please enter 1 or 0: ";
@@ -205,12 +197,8 @@ void newPath(Dijkstra<string>* path)
 	int dist; 
 	cout << "Please indicate which two cities you wish to connect : " << endl
 		<< "City A : ";
-<<<<<<< HEAD
 	getline(cin, cityA);
 	cout << endl;
-=======
-	getline(cin, cityA);	
->>>>>>> 9d522bc87d863b88beecc375b0cb1527b9565215
 	cout << "City B : ";
 	getline(cin, cityB);
 	cout << endl;
@@ -231,7 +219,7 @@ void removePath(Dijkstra<string>* path)
 	getline(cin, cityB);
 	path->remove(cityA, cityB);
 }
-<<<<<<< HEAD
+
 /*void undoRemoval()
 =======
 void undoRemoval(Dijkstra<string> *path)
