@@ -14,7 +14,7 @@
 // The following ADT choices can vary according to how you want
 // to implement the adjacency list, and they can be different from
 // those used in class Graph.
-#include "DACmap.h" // ADT for Adjacency List
+//#include "DACmap.h" // ADT for Adjacency List
 
 using namespace std;
 
@@ -24,13 +24,18 @@ class Vertex
 private:
 	LabelType vertexLabel;
 	bool      visited;  // True if the vertex is visited
+    
+//    DACmap<LabelType, Edge<LabelType> >  adjacencyList;
+//    map<LabelType, Edge<LabelType>> *adjacentIterator = adjacencyList.getIterator();
+//    
 
-	DACmap<LabelType, Edge<LabelType> >  adjacencyList;
-	DACmapIterator<LabelType, Edge<LabelType> > *adjacentIterator;
-
-	// Helper method for finding a specific neighbor
-	int getNeighborPosition(const LabelType& neighborVertex) const;
-
+    map<LabelType, Edge<LabelType>> adjacencyList;
+    typename map<LabelType, Edge<LabelType>>::iterator adjacentIterator = adjacencyList.begin();
+    
+//    DACmapIterator<LabelType, Edge<LabelType>> *adjacentIterator = adjacencyList.iterator();
+    // Helper method for finding a specific neighbor
+    int getNeighborPosition(const LabelType& neighborVertex) const;
+    
 public:
 	/** Creates an unvisited vertex, gives it a label, and clears its
 	adjacency list.
@@ -62,7 +67,7 @@ public:
 	/** Gets the weight of the edge between this vertex and the given vertex.
 	@return  The edge weight. This value is zero for an unweighted graph and
 	is negative if the .edge does not exist */
-	int getEdgeWeight(const LabelType& endVertex) const;
+	int getEdgeWeight(const LabelType& endVertex);
 
 	/** Calculates how many neighbors this vertex has.
 	@return  The number of the vertex's neighbors. */
@@ -84,7 +89,7 @@ template<class LabelType>
 Vertex<LabelType>::
 Vertex(LabelType label) : vertexLabel(label), visited(false)
 {
-	adjacentIterator = 0;
+	adjacentIterator = adjacencyList.begin();
 }  // end constructor
 
 template<class LabelType>
@@ -115,47 +120,58 @@ template<class LabelType>
 bool Vertex<LabelType>::connect(const LabelType& endVertex, const int edgeWeight)
 {
 	Edge<LabelType> thisEdge(endVertex, edgeWeight);
-	return adjacencyList.add(endVertex, thisEdge);
+    adjacentIterator = adjacencyList.find(endVertex);
+    if (adjacentIterator != adjacencyList.end()){
+        cout << vertexLabel << " and " << endVertex << " are already connected" << endl;
+        return false;
+    }
+    else{
+        adjacencyList[endVertex] = thisEdge;
+        return true;
+    }
 }  // end connect
 
 template<class LabelType>
 bool Vertex<LabelType>::disconnect(const LabelType& endVertex)
 {
-	return adjacencyList.remove(endVertex);
+    adjacentIterator = adjacencyList.find(endVertex);
+    if (adjacentIterator == adjacencyList.end()){
+        return false;
+    }
+    else{
+        adjacencyList.erase(adjacentIterator);
+        return true;
+    }
 }  // end disconnect
 
 template<class LabelType>
-int Vertex<LabelType>::getEdgeWeight(const LabelType& endVertex) const
+int Vertex<LabelType>::getEdgeWeight(const LabelType& endVertex)
 {
-	int edgeWeight = -1;
-	Edge<LabelType> theEdge = adjacencyList.getItem(endVertex);
-	edgeWeight = theEdge.getWeight();
-
-	return edgeWeight;
+    int weight = adjacencyList[endVertex].getWeight();
+    return weight;
 }  // end getEdgeWeight
 
 template<class LabelType>
 int Vertex<LabelType>::getNumberOfNeighbors() const
 {
-	return adjacencyList.getNumberOfItems();
+	return (int)adjacencyList.size();
 }  // end getNumberOfNeighbors
 
 template<class LabelType>
 void Vertex<LabelType>::resetNeighbor()
 {
-	adjacentIterator = adjacencyList.iterator();
+	adjacentIterator = adjacencyList.begin();
 }  // end resetNeighbor
 
 template<class LabelType>
 LabelType Vertex<LabelType>::getNextNeighbor()
 {
-	if (adjacentIterator->hasNext())
-	{
-		LabelType thisNeighbor = (adjacentIterator->next()).getEndVertex();
-		return thisNeighbor;
-	}
-	else
-		return this->getLabel(); // Signal end of adjacency list
+    adjacentIterator = adjacencyList.begin();
+    while (adjacentIterator != adjacencyList.end() && adjacentIterator->second.isVisited()){
+            adjacentIterator++;
+    }
+    adjacentIterator->second.visit();
+    return adjacentIterator->first;
 }  // end getNextNeighbor
 
 template<class LabelType>
@@ -167,21 +183,13 @@ bool Vertex<LabelType>::operator==(const Vertex<LabelType>& rightHandItem) const
 template<class LabelType>
 int Vertex<LabelType>::getNeighborPosition(const LabelType& neighborVertex) const
 {
-	int position = 0;
-	int length = adjacencyList.getLength();
-	bool foundNeighbor = false;
-
-	while ((position < length) && !foundNeighbor)
-	{
-		position++;
-		Edge<LabelType> currentEdge = adjacencyList.getEntry(position);
-		foundNeighbor = (neighborVertex == currentEdge.getLabel());
-	}  // end while
-
-	if ((position > length) || (!foundNeighbor))
-		position = -position;
-
-	return position;
+    adjacentIterator = adjacencyList.find(neighborVertex);
+    if (adjacentIterator == adjacencyList.end()) {
+        return -1;
+    }
+    else{
+        return adjacentIterator.getWeight();
+    }
 }  // end getNeighborPosition
 
 

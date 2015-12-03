@@ -13,7 +13,7 @@ const int inf = 1 << 30;
 
 template <class LabelType>
 class Dijkstra : public LinkedGraph<LabelType>{
-private:
+protected:
     map<LabelType,Vertex<LabelType>*> localList;
     typename map<LabelType,Vertex<LabelType>*>::iterator localIterator;
     ofstream *ptrOut;
@@ -27,7 +27,7 @@ public:
     vector<LabelType> findShortestPath(LabelType cityA, LabelType cityB);
     vector<LabelType> solve(LabelType start, LabelType end);
     void readPath(LabelType stuff);
-    void reset(){ localList.clear();this->vertices.clear(); this->numberOfVertices = this->numberOfEdges = 0; }
+    void reset(){ localList.clear(); this->numberOfVertices = this->numberOfEdges = 0; }
     void refresh(){} //Call this before calculation
 };
 
@@ -43,6 +43,7 @@ bool Dijkstra<LabelType>::add(LabelType start, LabelType end, int edgeWeight){
     localIterator = localList.find(end);
     if (localIterator == localList.end()){
         localList[end] = new Vertex<LabelType>(end);
+        this->numberOfVertices++;
     }
     
     //    ########### Connects the two vertex ###########
@@ -57,9 +58,12 @@ bool Dijkstra<LabelType>::add(LabelType start, LabelType end, int edgeWeight){
 template <class LabelType>
 vector<LabelType> Dijkstra<LabelType>::findShortestPath(LabelType cityA, LabelType cityB){
    
-    if (!this->vertices.contains(cityA))
+    localIterator = localList.find(cityA);
+    if (localIterator == localList.end())
         cout << "Doesnt Exist" << endl;
-    if (!this->vertices.contains(cityB))
+    
+    localIterator = localList.find(cityB);
+    if (localIterator == localList.end())
         cout << "Doesnt Exist" << endl;
     
     return solve(cityA, cityB);
@@ -70,6 +74,10 @@ template <class LabelType>
 vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
 {
     map<LabelType,int> weight;
+    
+    for (localIterator = localList.begin(); localIterator != localList.end(); localIterator++) {
+        weight[localIterator->first] = inf;
+    }
 
     int Totalweight = 0;
     int tempWeight = 0;
@@ -95,7 +103,6 @@ vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
 //            Gets initial crap
             LabelType temp = localList[localIterator->first]->getNextNeighbor();
             tempWeight = localList[localIterator->first]->getEdgeWeight(temp);
-            weight[temp] = inf;
 
 //            If current weight is lower than total weight, change it
 //            Needs to also store originating node. But i'm too lazy to right now
@@ -107,13 +114,15 @@ vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
                 smallest = localList[temp];
                 foo = weight[temp];
             }
-//            Mark shortest distance as done
-            if (smallest == nullptr)
-                cout<<"Something is wrong" << endl;
-            else
-                smallest->visit();
         }
-//        Bunch of crap to prep for the next iteration
+        
+        //            Mark shortest distance as done
+        if (smallest == nullptr)
+            cout<<"Something is wrong" << endl;
+        else
+            smallest->visit();
+        
+        //        Bunch of crap to prep for the next iteration
         queue.push_back(smallest->getLabel());
         queue.erase(queue.begin());
         Totalweight += weight[queue.front()];

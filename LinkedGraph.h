@@ -152,37 +152,37 @@ bool LinkedGraph<LabelType>::remove(LabelType start, LabelType end)
 template<class LabelType>
 int LinkedGraph<LabelType>::getEdgeWeight(LabelType start, LabelType end) const
 {
-	int weight = -1;
-	if (vertices.contains(start))
-	{
-		Vertex<LabelType>* startVertex = vertices.getItem(start);
-		weight = startVertex->getEdgeWeight(end);
-	}  // end if
-
-	return weight;
+    int weight = -1;
+    if (vertices.contains(start))
+    {
+        Vertex<LabelType>* startVertex = vertices.getItem(start);
+        weight = startVertex->getEdgeWeight(end);
+    }  // end if
+    
+    return weight;
 }  // end getEdgeWeight
 
 // Mark all vertices as unvisited
 template<class LabelType>
 void LinkedGraph<LabelType>::unvisitVertices()
 {
-	pvertexIterator = vertices.iterator();
-	while (pvertexIterator->hasNext())
-	{
-		Vertex<LabelType>* loopVertex = pvertexIterator->next();
-		loopVertex->unvisit();
-	}  // end while
+//	pvertexIterator = vertices.iterator();
+//	while (pvertexIterator->hasNext())
+//	{
+//		Vertex<LabelType>* loopVertex = pvertexIterator->next();
+//		loopVertex->unvisit();
+//	}  // end while
 } // endunvisitVertices
 
 template<class LabelType>
 void LinkedGraph<LabelType>::depthFirstTraversal(LabelType startLabel,
 	void visit(LabelType&))
 {
-	// Mark all vertices as unvisited
-	unvisitVertices();
-
-	Vertex<LabelType>* startVertex = vertices.getItem(startLabel);
-	depthFirstTraversalHelper(startVertex, visit);
+//	// Mark all vertices as unvisited
+//	unvisitVertices();
+//
+//	Vertex<LabelType>* startVertex = vertices.getItem(startLabel);
+//	depthFirstTraversalHelper(startVertex, visit);
 }  // end depthFirstTraversal
 
 template<class LabelType>

@@ -17,6 +17,7 @@ class Edge
 private:
 	LabelType endVertex; // Cannot be changed as doing so changes the edge
 	int       edgeWeight;
+    bool visited = false;
 
 public:
 	Edge();
@@ -26,6 +27,8 @@ public:
 	LabelType getEndVertex() const;
 	int getWeight() const;
 	void setWeight(const int newWeight);
+    bool isVisited(){return visited;}
+    void visit(){visited = true;}
 }; // end Edge
 
 template<class LabelType>
