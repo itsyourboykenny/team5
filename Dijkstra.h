@@ -132,8 +132,6 @@ vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
 	Totalweight = 0;
 	vector<LabelType> returnThisOne;
 
-	Vertex<LabelType>* endCity = localList[end];
-	returnThisOne.push_back(end);
 	Vertex<LabelType>* previ = localList[end];
 	string gettingDist;
 	gettingDist = previ->getLabel();
