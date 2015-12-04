@@ -140,10 +140,10 @@ vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
     
     localIterator = localList.find(end);
     while (localIterator != localList.find(start)){
-        visitList.push_back(localIterator->first);
+        visitList.insert(visitList.begin(), localIterator->first);
         localIterator = localList.find((weight[localIterator->first]).from);
     }
-    visitList.push_back(start);
+    visitList.insert(visitList.begin(),start);
     
     for (int shit = (int)visitList.size(); shit > 0; shit--) {
         cout << visitList[shit] << " -> ";
