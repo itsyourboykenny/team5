@@ -16,8 +16,8 @@
 
 
 using namespace std;
-map<string, vector<string>*> ourMap;
-map<string, vector<string>*>::iterator ourMapIterator;
+//map<string, vector<string>*> ourMap;
+//map<string, vector<string>*>::iterator ourMapIterator;
 void newPath(Dijkstra<string> *path);
 void removePath(Dijkstra<string> *path);
 void undoRemoval(Dijkstra<string> *path);
@@ -98,11 +98,17 @@ int main()
         }
         cout << "Would you like to perform another action? (1 for yes, 0 for no): ";
         input(answer);
-        while (cin.fail())
-        {
-            cout << "ERROR: Please enter 1 or 0: ";
-            input(answer);
-        }
+		while (answer < 0 || answer > 1)
+		{
+			cout << "ERROR: Please enter 1 or 0: ";
+			input(answer);
+
+		}
+        //while (cin.fail())
+        //{
+        //    cout << "ERROR: Please enter 1 or 0: ";
+        //    input(answer);
+        //}
     }
     
     /*
@@ -216,12 +222,10 @@ void removePath(Dijkstra<string> *path)
  }*/
 void showPaths(Dijkstra<string> *path)
 {
-    cout << "City A    City B    distance" << endl
-    << " ------    ------    --------" << endl;
-    for (ourMapIterator = ourMap.begin(); ourMapIterator != ourMap.end(); ourMapIterator++)
-    {
-        cout << ourMapIterator->first << endl;
-    }
+    cout << "City A           City B           distance" << endl
+		 << "-------          -------          --------" << endl;
+	
+	path->readPath();
 }
 void findShortestPath(Dijkstra<string> *path)
 {
