@@ -32,8 +32,6 @@ using namespace std;
 //void convertTolower(string &s);
 //void displayShortestPath(vector<string> list, string cityA, string cityB);
 
-//************* I moved function definitions to a header file ***************
-
 int main()
 {
 //    Dijkstra<string> *delivery = new Dijkstra<string>;
@@ -63,11 +61,11 @@ int main()
         << "4. undo removal of delivery path" << endl
         << "5. Show possible delivery paths" << endl
         << "6. find the shortest delivery route" << endl;
-        choice = input("menu");
+        choice = inputInt();
         while (choice < 1 || choice > 7 || cin.fail())
         {
             cout << "ERROR: Please enter a choice between 1 and 6: ";
-            choice = input("menu");
+            choice = inputInt();
         }
         switch (choice)
         {
@@ -88,19 +86,19 @@ int main()
             case 6: findShortestPath(test1);
                 break;
         }
-        cout << "Would you like to perform another action? (1 for yes, 0 for no): ";
-        answer = input("answer");
-		while (answer != 0 || answer != 1)
-		{
-			cout << "ERROR: Please enter 1 or 0: ";
-			answer = input("answer");
-
-		}
-        //while (cin.fail())
-        //{
-        //    cout << "ERROR: Please enter 1 or 0: ";
-        //    input(answer);
-        //}
+        cout << "Would you like to perform another action? (Y for yes, N for no): ";
+        answer = inputBool();
+//		while (!answer)
+//		{
+//			cout << "ERROR: Please enter 1 or 0: ";
+//			answer = inputBool();
+//
+//		}
+//        //while (cin.fail())
+//        //{
+//        //    cout << "ERROR: Please enter 1 or 0: ";
+//        //    input(answer);
+//        //}
     }
     
     /*

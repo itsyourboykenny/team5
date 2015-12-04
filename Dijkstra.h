@@ -27,6 +27,7 @@ protected:
     map<LabelType,Vertex<LabelType>*> localList;
     typename map<LabelType,Vertex<LabelType>*>::iterator localIterator;
     ofstream *ptrOut;
+    vector<pair<pair<LabelType, LabelType>,int>> history;
     
 public:
     Dijkstra(){ reset(); ptrOut = nullptr; }
@@ -36,7 +37,7 @@ public:
     bool add(LabelType start, LabelType end, int edgeWeight);
     vector<pair<LabelType,int>> findShortestPath(LabelType cityA, LabelType cityB);
     vector<pair<LabelType,int>> solve(LabelType start, LabelType end);
-    bool remove();
+    bool remove(LabelType cityA, LabelType cityB);
     bool undoRemove();
     void readPath();
     void reset(){ localList.clear(); this->numberOfVertices = this->numberOfEdges = 0; }
@@ -44,13 +45,35 @@ public:
 };
 
 template <class LabelType>
-bool Dijkstra<LabelType>::remove(){
+bool Dijkstra<LabelType>::remove(LabelType cityA, LabelType cityB){
     
+    localIterator = localList.find(cityA);
+    if (localIterator == localList.end())
+        return false;
+    localIterator = localList.find(cityB);
+    if (localIterator == localList.end())
+        return false;
+    
+//    pair<LabelType,LabelType> pair(cityA,cityB);
+//    pair<pair<LabelType,LabelType>, int> undo(pair,localList[cityA]->getEdgeWeight(cityB));
+    
+    localIterator = localList.find(cityA);
+    localIterator->second->disconnect(cityB);
+    if (localList[cityA]->getNumberOfNeighbors() == 0)
+        localList.erase(localIterator);
+    
+    localIterator = localList.find(cityB);
+    localIterator->second->disconnect(cityA);
+    if (localList[cityB]->getNumberOfNeighbors() == 0)
+        localList.erase(localIterator);
+    
+    return true;
+
 }
 
 template <class LabelType>
 bool Dijkstra<LabelType>::undoRemove(){
-    
+//    add(history[0].first, history[0]second, <#int edgeWeight#>)
 }
 
 template <class LabelType>
@@ -60,6 +83,7 @@ void Dijkstra<LabelType>::readPath(){
     cout << setw(l) << left << "City A" << setw(l) << left << "City B" << setw(l) << left << "Distance" << endl;
     for (int x = 0; x < l*3; x++) {cout << "*";}
     cout << endl;
+    
     for (localIterator=localList.begin(); localIterator!=localList.end(); localIterator++) {
         temp = localIterator->second->getNextNeighbor();
         cout << left << setw(l) << localIterator->first <<
@@ -180,9 +204,11 @@ vector<pair<LabelType,int>> Dijkstra<LabelType>::solve(LabelType start, LabelTyp
         localIterator = localList.find((weight[localIterator->first]).from);
         pair<LabelType,int> data(origin,localList[origin]->getEdgeWeight(localIterator->first));
         visitList.insert(visitList.begin(), data);
+//        justForNow.insert(justForNow.begin(), localIterator->first);
     }
     pair<LabelType,int> data(start,localList[start]->getEdgeWeight(visitList[0].first));
     visitList.insert(visitList.begin(),data);
+//    justForNow.insert(justForNow.begin(), start);
     
 	return visitList;
 }

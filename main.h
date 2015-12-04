@@ -15,35 +15,39 @@ void display(string& anItem)
     cout << "Displaying item - " << anItem << endl;
 }
 
-int input(string type = "blank"){
+int inputInt(){
     string temp;
     getline(cin, temp);
     if (temp.back()=='\n'||temp.back()=='\r') temp.pop_back();
-    if (type == "menu") {
-        if (temp > "6" || temp < "1")
-            return -1;
-        else
-            return stoi(temp);
-    }
-    else{
-        if (temp != "1" || temp != "0")
-            return -1;
-        else
-            return stoi(temp);
-    }
+    if (temp > "6" || temp < "1")
+        return -1;
+    else
+        return stoi(temp);
+    
+}
+
+bool inputBool(){
+    string temp;
+    getline(cin, temp);
+    if (temp.back()=='\n'||temp.back()=='\r') temp.pop_back();
+    if (temp == "Y" || temp == "y")
+        return true;
+    else
+        return false;
 }
 
 
 bool openInputFile(ifstream&ifs)
 {
-//    string filename;
-//    cout << "Enter the input filename: ";
-//    getline(cin, filename);
-//    ifs.open(filename.c_str());
-//    return ifs.is_open();
-    
-    ifs.open("/Users/itsyourboykenny/Google Drive/School/CIS 22C/Dijkstra/Dijkstra/airdistance.txt");
+    string filename;
+    cout << "Enter the input filename: ";
+    getline(cin, filename);
+    if (filename.back() == '\n' || filename.back() == '\r') filename.pop_back();
+    ifs.open(filename.c_str());
     return ifs.is_open();
+    
+//    ifs.open("/Users/itsyourboykenny/Google Drive/School/CIS 22C/Dijkstra/Dijkstra/airdistance.txt");
+//    return ifs.is_open();
     
 } // end openInputFile
 
@@ -62,9 +66,6 @@ bool readInputFile(ifstream &ifs, Dijkstra<string> &path)
     }
     return true;
 }
-
-// ********** This function needs formatting before passing it to Dijkstras
-//It's reading in the spaces and causing the class to not work **********
 
 //bool readInputFile(ifstream&ifs, Dijkstra<string> &path){
 //    if (!openInputFile(ifs))
@@ -120,6 +121,7 @@ void newPath(Dijkstra<string> &path)
     cout << endl;
     path.add(cityA, cityB, dist);
 }
+
 void removePath(Dijkstra<string> &path)
 {
     string cityA,
@@ -170,7 +172,7 @@ bool findShortestPath(Dijkstra<string> &path)
     int l = 15;
     for (int g = 0; g < shortestlist.size()-1; g++){
         cout << setw(l) << right << shortestlist[g].first << " -> " << setw(l) << left << shortestlist[g+1].first <<
-        " w/ distance of: " <<shortestlist[g].second << endl;
+        " w/ distance of: " <<shortestlist[g+1].second << endl;
     }
     
 //    for (int i = 0; i < shortestlist.size(); i++)
@@ -186,7 +188,7 @@ bool findShortestPath(Dijkstra<string> &path)
 //    }
     
     for (int p = 0; p < shortestlist.size()-1; p++) {
-        totalWeight+=shortestlist[p].second;
+        totalWeight+=shortestlist[p+1].second;
     }
     cout << "And the total distance is: " << totalWeight << " miles" << endl;
     return true;
