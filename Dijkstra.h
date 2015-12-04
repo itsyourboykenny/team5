@@ -8,12 +8,14 @@
 #include "Node.h"
 #include "Vertex.h"
 #include <fstream>
+#include <iomanip>
 using namespace std;
 const int inf = 1 << 30;
-
+template <class LabelType>
 struct w{
     int lbs = 0;
     bool done = false;
+    LabelType from;
     
     void isStart(){lbs = 0; done = true;}
     void init(){lbs = inf; done = false;}
@@ -85,20 +87,18 @@ vector<LabelType> Dijkstra<LabelType>::findShortestPath(LabelType cityA, LabelTy
 template <class LabelType>
 vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
 {
-    map<LabelType,w> weight;
+    map<LabelType,w<LabelType>> weight;
     
     for (localIterator = localList.begin(); localIterator != localList.end(); localIterator++) {
         weight[localIterator->first].init();
     }
 
-    int Totalweight = 0;
+    int currWeight = 0;
     int tempWeight = 0;
     vector<LabelType> visitList;
     vector<LabelType> queue;
     
     weight[start].isStart();
-
-    queue.push_back(localList[start]->getLabel());
     localIterator = localList.find(start);
     
     while(!weight[end].done)
@@ -107,8 +107,6 @@ vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
         LabelType smallest;
         int foo = inf;
         queue = localIterator->second->getNextNeighbor();
-        bool isFound = false;
-        
 //        Compare against all possible paths
         for (int y = 0; y < queue.size(); y++)
         {
@@ -118,38 +116,37 @@ vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
                 LabelType temp = queue[y];
                 tempWeight = localList[localIterator->first]->getEdgeWeight(temp);
                 
-                //            If current weight is lower than total weight, change it
-                //            Needs to also store originating node. But i'm too lazy to right now
-                if (weight[temp].lbs > Totalweight+tempWeight)
-                    if (!weight[temp].done)
-                        weight[temp].lbs = Totalweight+tempWeight;
-                //            Determine smallest weight. The easier way
-                if (weight[temp].lbs < foo){
-                    smallest = temp;
-                    foo = weight[temp].lbs;
-                    isFound = true;
+                if (weight[temp].lbs > tempWeight+currWeight){
+                    weight[temp].lbs = tempWeight+currWeight;
+                    weight[temp].from = localIterator->first;
                 }
             }
         }
         
         //            Mark shortest distance as done, if no path is found then backtrack
-        if (!isFound){
-            visitList.erase(visitList.end());
-            smallest = visitList[visitList.size()];
-        }
-        else{
-            weight[smallest].done = true;
-            visitList.push_back(smallest);
-            Totalweight += weight[smallest].lbs;
-        }
         
+        for (localIterator=localList.begin();localIterator!=localList.end();localIterator++) {
+            if(weight[localIterator->first].lbs < foo && !weight[localIterator->first].done){
+                smallest = localIterator->first;
+                foo = weight[smallest].lbs;
+            }
+        }
+        weight[smallest].done = true;
+
+        currWeight = weight[smallest].lbs;
         //        start iteration on next target
         localIterator = localList.find(smallest);
     }
     
-	cout << "Total Distance Traveled " << Totalweight << " miles" << endl;
-    for (int shit = 0; shit < visitList.size(); shit++) {
-        cout << visitList[shit] << " -- " << visitList[shit+1] << " = " << localList[visitList[shit]]->getEdgeWeight(visitList[shit+1]) << endl;;
+    localIterator = localList.find(end);
+    while (localIterator != localList.find(start)){
+        visitList.push_back(localIterator->first);
+        localIterator = localList.find((weight[localIterator->first]).from);
+    }
+    visitList.push_back(start);
+    
+    for (int shit = (int)visitList.size(); shit > 0; shit--) {
+        cout << visitList[shit] << " -> ";
     }
 	return visitList;
 }
