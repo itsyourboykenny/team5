@@ -34,6 +34,8 @@ void input(whatever &stuff){
 bool openInputFile(ifstream&ifs);
 bool readInputFile(ifstream&ifs, Dijkstra<string> *path);
 void convertTolower(string &s);
+void displayShortestPath(vector<string> list, string cityA, string cityB);
+
 void display(string& anItem)
 {
     cout << "Displaying item - " << anItem << endl;
@@ -52,13 +54,13 @@ int main()
     
     bool answer = 1;
     int choice;
-//    if (!readInputFile(inputFile, delivery))
-//    {
-//        cout << "Cannot open the files. Closing the program!" << endl;
-//        return 1;
-//    }
-    inputFile.open("/Users/itsyourboykenny/Desktop/Dijkstra/Team5 Dijkstra/airdistance.txt");
-    readInputFile(inputFile, &test1);
+	if (!readInputFile(inputFile, &test1))
+    {
+        cout << "Cannot open the files. Closing the program!" << endl;
+        return 1;
+    }
+    //inputFile.open("/Users/itsyourboykenny/Desktop/Dijkstra/Team5 Dijkstra/airdistance.txt");
+    //readInputFile(inputFile, &test1);
     while (answer)
     {
         cout << "Welcome to  the delivery simulation!" << endl
@@ -114,57 +116,59 @@ int main()
 
 bool openInputFile(ifstream&ifs)
 {
-//    string filename;
-//    cout << "Enter the input filename: ";
-//    
-//    getline(cin, filename);
-//    ifs.open(filename.c_str());
-//    return ifs.is_open();
-    
-    ifs.open("/Users/itsyourboykenny/Desktop/Dijkstra/Team5 Dijkstra/airdistance.txt");
+    string filename;
+    cout << "Enter the input filename: ";
+    getline(cin, filename);
+    ifs.open(filename.c_str());
     return ifs.is_open();
+    
+    //ifs.open("/Users/itsyourboykenny/Desktop/Dijkstra/Team5 Dijkstra/airdistance.txt");
+    //return ifs.is_open();
     
 } // end openInputFile
 
-bool readInputFile(ifstream &ifs, Dijkstra<string> *path){
-    string  cityA,
-            cityB;
-    int     dist;
-    
-    while (ifs.peek() != EOF){
-        ifs >> cityA >> cityB;
-        ifs >> dist;
-        path->add(cityA, cityB, dist);
-    }
-    return true;
-}
-
-//bool readInputFile(ifstream&ifs, Dijkstra<string> *path)
+//bool readInputFile(ifstream &ifs, Dijkstra<string> *path)
 //{
-//    if (!openInputFile(ifs))
-//        return false;
-//    string cityA, cityB;
-//    int dist;
+//   if (!openInputFile(ifs))
+//     return false;
+//    string  cityA,
+//            cityB;
+//    int     dist;
 //    
-//    while (!(ifs.eof()))
-//    {
-//        if (!getline(ifs, cityA, ','))
-//            break;
-//        if (!getline(ifs, cityB, ','))
-//            break;
-//        if (!(ifs >> dist))
-//            break;
-//        ifs.ignore();
-//        
-//        cout << cityA << " " << cityB << " " << dist << endl;
-//        /*convertTolower(cityA);
-//         convertTolower(cityB);*/
+//    while (ifs.peek() != EOF){
+//        ifs >> cityA >> cityB;
+//        ifs >> dist;
 //        path->add(cityA, cityB, dist);
 //    }
-//    
 //    return true;
-//    
-//} // end readInputFile
+//}
+
+bool readInputFile(ifstream&ifs, Dijkstra<string> *path){
+    if (!openInputFile(ifs))
+        return false;
+    string cityA, cityB;
+    int dist;
+    
+    while (true)
+    {
+        if (!getline(ifs, cityA, ','))
+            break;
+        if (!getline(ifs, cityB, ','))
+            break;
+        if (!(ifs >> dist))
+            break;
+        
+        cout << cityA << " " << cityB << " " << dist << endl;
+        /*convertTolower(cityA);
+         convertTolower(cityB);*/
+        path->add(cityA, cityB, dist);
+		ifs.ignore();
+
+    }
+    
+    return true;
+    
+} // end readInputFile
 
 void convertTolower(string &s)
 {
@@ -208,7 +212,6 @@ void removePath(Dijkstra<string> *path)
 /*void undoRemoval()
  =======
  void undoRemoval(Dijkstra<string> *path)
- >>>>>>> 9d522bc87d863b88beecc375b0cb1527b9565215
  {
  }*/
 void showPaths(Dijkstra<string> *path)
@@ -230,5 +233,22 @@ void findShortestPath(Dijkstra<string> *path)
     getline(cin, cityA);
     cout << "City B : ";
     getline(cin, cityB);
-    path->findShortestPath(cityA, cityB);
+    vector<string> shortestlist = path->findShortestPath(cityA, cityB);
+
+	int totalWeight = 0;
+	int tempWeight;
+	cout << "The shortest route from " << cityA << " to " << cityB << " is: \n";
+	for (int i = 0; i < shortestlist.size(); i++)
+	{
+		cout << shortestlist[i].data();
+		if ((i + 1) < shortestlist.size())
+		{
+			cout << " -> " << shortestlist[i + 1] << " = ";
+			tempWeight = path->readWeight(shortestlist[i].data(), shortestlist[i + 1].data());
+			cout << tempWeight << " miles" << endl;
+			totalWeight += tempWeight;
+		}
+	}
+	cout << "And the total distance is: " << totalWeight << " miles" << endl;
+	
 }

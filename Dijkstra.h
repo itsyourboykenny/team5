@@ -36,7 +36,8 @@ public:
     bool add(LabelType start, LabelType end, int edgeWeight);
     vector<LabelType> findShortestPath(LabelType cityA, LabelType cityB);
     vector<LabelType> solve(LabelType start, LabelType end);
-    void readPath(LabelType stuff);
+	void readPath(LabelType city);
+	int readWeight(LabelType city, LabelType find);
     void reset(){ localList.clear(); this->numberOfVertices = this->numberOfEdges = 0; }
     void refresh(){} //Call this before calculation
 };
@@ -116,7 +117,8 @@ vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
                 LabelType temp = queue[y];
                 tempWeight = localList[localIterator->first]->getEdgeWeight(temp);
                 
-                if (weight[temp].lbs > tempWeight+currWeight){
+                if (weight[temp].lbs > tempWeight+currWeight)
+				{
                     weight[temp].lbs = tempWeight+currWeight;
                     weight[temp].from = localIterator->first;
                 }
@@ -144,11 +146,15 @@ vector<LabelType> Dijkstra<LabelType>::solve(LabelType start, LabelType end)
         localIterator = localList.find((weight[localIterator->first]).from);
     }
     visitList.insert(visitList.begin(),start);
-    
-    for (int shit = (int)visitList.size(); shit > 0; shit--) {
-        cout << visitList[shit] << " -> ";
-    }
+
 	return visitList;
 }
 
+template <class LabelType>
+int Dijkstra<LabelType>::readWeight(LabelType start, LabelType find)
+{
+	localIterator = localList.find(start);
+	int weight = localList[localIterator->first]->getEdgeWeight(find);
+	return weight;
+}
 #endif
