@@ -53,7 +53,7 @@ public:
 	@param start  A label for the first vertex.
 	@param visit  A client-defined function that performs an operation on
 	or with each visited vertex. */
-	virtual void breadthFirstTraversal(LabelType start, void visit(LabelType&)) = 0;
+//	virtual void breadthFirstTraversal(LabelType start, void visit(LabelType&)) = 0;
     
     virtual std::vector<LabelType> findShortestPath(LabelType cityA, LabelType cityB) = 0;
 }; // end GraphInterface

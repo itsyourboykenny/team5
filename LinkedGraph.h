@@ -37,8 +37,8 @@ protected: // protected so you can derive this class for you team project soluti
 
 	void depthFirstTraversalHelper(Vertex<LabelType>* startVertex,
 		void visit(LabelType&));
-	void breadthFirstTraversalHelper(Vertex<LabelType>* startVertex,
-		void visit(LabelType&));
+//	void breadthFirstTraversalHelper(Vertex<LabelType>* startVertex,
+//		void visit(LabelType&));
 public:
 	LinkedGraph();
 	virtual ~LinkedGraph();
@@ -56,7 +56,7 @@ public:
 
 	int getEdgeWeight(LabelType start, LabelType end) const;
 	void depthFirstTraversal(LabelType start, void visit(LabelType&));
-	void breadthFirstTraversal(LabelType start, void visit(LabelType&));
+//	void breadthFirstTraversal(LabelType start, void visit(LabelType&));
 
 	//---> YOU DECLARE HERE (AND WRITE BELOW) THE MEMBER FUNCTION TO
 	//         WRITE THE GRAPH TO A TEXT FILE (SUGGEST TO PASS AN
@@ -185,16 +185,16 @@ void LinkedGraph<LabelType>::depthFirstTraversal(LabelType startLabel,
 //	depthFirstTraversalHelper(startVertex, visit);
 }  // end depthFirstTraversal
 
-template<class LabelType>
-void LinkedGraph<LabelType>::breadthFirstTraversal(LabelType startLabel,
-	void visit(LabelType&))
-{
-	// Mark all vertices as unvisited
-	unvisitVertices();
-
-	Vertex<LabelType>* startVertex = vertices.getItem(startLabel);
-	breadthFirstTraversalHelper(startVertex, visit);
-}  // end breadthFirstTraversal
+//template<class LabelType>
+//void LinkedGraph<LabelType>::breadthFirstTraversal(LabelType startLabel,
+//	void visit(LabelType&))
+//{
+//	// Mark all vertices as unvisited
+//	unvisitVertices();
+//
+//	Vertex<LabelType>* startVertex = vertices.getItem(startLabel);
+//	breadthFirstTraversalHelper(startVertex, visit);
+//}  // end breadthFirstTraversal
 
 template<class LabelType>
 void LinkedGraph<LabelType>::
@@ -215,46 +215,46 @@ void visit(LabelType&))
 	}  // end for
 }  // end depthFirstTraversalHelper
 
-template<class LabelType>
-void LinkedGraph<LabelType>::
-breadthFirstTraversalHelper(Vertex<LabelType>* startVertex, void visit(LabelType&))
-{
-	queue<Vertex<LabelType>*> vertexQueue;
-	LabelType startLabel = startVertex->getLabel();
-	//   cout << "Enqueue and visit " << startLabel << endl;
-	vertexQueue.push(startVertex);
-	startVertex->visit();         // Mark as visited
-	visit(startLabel);
-	startVertex->resetNeighbor(); // Reset reference for adjacency list
-
-	while (!vertexQueue.empty())
-	{
-		// Remove vertex from queue
-		Vertex<LabelType>* nextVertex = vertexQueue.front();
-		vertexQueue.pop();
-		LabelType nextLabel = nextVertex->getLabel();
-		//      cout << "Dequeue " << nextLabel << endl;
-		//      cout << "Consider " << nextLabel << "'s " << nextVertex->getNumberOfNeighbors() << " neighbors." << endl;
-
-		// Add neighbors of visited vertex to queue
-		for (int index = 1; index <= nextVertex->getNumberOfNeighbors(); index++)
-		{
-			LabelType neighborLabel = nextVertex->getNextNeighbor();
-			//         cout << "Neighbor " << neighborLabel;
-			Vertex<LabelType>* neighbor = vertices.getItem(neighborLabel);
-			if (!neighbor->isVisited())
-			{
-				//            cout << " is not visited; enqueue and visit it." << endl;
-				vertexQueue.push(neighbor);
-				neighbor->visit();         // Mark as visited
-				visit(neighborLabel);
-				neighbor->resetNeighbor(); // Reset reference for adjacency list
-			}
-			//         else
-			//            cout << " was visited already; ignore it." << endl;
-		}  // end for
-	}  // end while
-}  // end breadthFirstTraversalHelper
+//template<class LabelType>
+//void LinkedGraph<LabelType>::
+//breadthFirstTraversalHelper(Vertex<LabelType>* startVertex, void visit(LabelType&))
+//{
+//	queue<Vertex<LabelType>*> vertexQueue;
+//	LabelType startLabel = startVertex->getLabel();
+//	//   cout << "Enqueue and visit " << startLabel << endl;
+//	vertexQueue.push(startVertex);
+//	startVertex->visit();         // Mark as visited
+//	visit(startLabel);
+//	startVertex->resetNeighbor(); // Reset reference for adjacency list
+//
+//	while (!vertexQueue.empty())
+//	{
+//		// Remove vertex from queue
+//		Vertex<LabelType>* nextVertex = vertexQueue.front();
+//		vertexQueue.pop();
+//		LabelType nextLabel = nextVertex->getLabel();
+//		//      cout << "Dequeue " << nextLabel << endl;
+//		//      cout << "Consider " << nextLabel << "'s " << nextVertex->getNumberOfNeighbors() << " neighbors." << endl;
+//
+//		// Add neighbors of visited vertex to queue
+//		for (int index = 1; index <= nextVertex->getNumberOfNeighbors(); index++)
+//		{
+//			LabelType neighborLabel = nextVertex->getNextNeighbor();
+//			//         cout << "Neighbor " << neighborLabel;
+//			Vertex<LabelType>* neighbor = vertices.getItem(neighborLabel);
+//			if (!neighbor->isVisited())
+//			{
+//				//            cout << " is not visited; enqueue and visit it." << endl;
+//				vertexQueue.push(neighbor);
+//				neighbor->visit();         // Mark as visited
+//				visit(neighborLabel);
+//				neighbor->resetNeighbor(); // Reset reference for adjacency list
+//			}
+//			//         else
+//			//            cout << " was visited already; ignore it." << endl;
+//		}  // end for
+//	}  // end while
+//}  // end breadthFirstTraversalHelper
 
 template<class LabelType>
 Vertex<LabelType>* LinkedGraph<LabelType>::

@@ -78,7 +78,7 @@ public:
 
 	/** Gets this vertex's next neighbor in the adjacency list.
 	@return  The label of the vertex's next neighbor. */
-	LabelType getNextNeighbor();
+	vector<LabelType> getNextNeighbor();
 
 	/** Sees whether this vertex is equal to another one.
 	Two vertices are equal if they have the same label. */
@@ -164,14 +164,13 @@ void Vertex<LabelType>::resetNeighbor()
 }  // end resetNeighbor
 
 template<class LabelType>
-LabelType Vertex<LabelType>::getNextNeighbor()
+vector<LabelType> Vertex<LabelType>::getNextNeighbor()
 {
-    adjacentIterator = adjacencyList.begin();
-    while (adjacentIterator != adjacencyList.end() && adjacentIterator->second.isVisited()){
-            adjacentIterator++;
+    vector<LabelType> returnThis;
+    for (adjacentIterator = adjacencyList.begin(); adjacentIterator != adjacencyList.end(); adjacentIterator++) {
+        returnThis.push_back(adjacentIterator->first);
     }
-    adjacentIterator->second.visit();
-    return adjacentIterator->first;
+    return returnThis;
 }  // end getNextNeighbor
 
 template<class LabelType>
