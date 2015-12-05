@@ -19,7 +19,7 @@ int inputInt(){
     string temp;
     getline(cin, temp);
     if (temp.back()=='\n'||temp.back()=='\r') temp.pop_back();
-    if (temp > "6" || temp < "1")
+    if (temp > "7" || temp < "1")
         return -1;
     else
         return stoi(temp);
@@ -145,7 +145,7 @@ void showPaths(Dijkstra<string> &path)
 {
 //    cout << "City A           City B           distance" << endl
 //    << "-------          -------          --------" << endl;
-    
+	int answer;
     path.readPath();
 }
 bool findShortestPath(Dijkstra<string> &path)
@@ -177,18 +177,6 @@ bool findShortestPath(Dijkstra<string> &path)
         " w/ distance of: " <<shortestlist[g+1].second << endl;
     }
     
-//    for (int i = 0; i < shortestlist.size(); i++)
-//    {
-//        cout << shortestlist[i].first;
-//        if ((i + 1) < shortestlist.size())
-//        {
-//            cout << " -> " << shortestlist[i + 1] << " = ";
-//            tempWeight = path.readWeight(shortestlist[i].data(), shortestlist[i + 1].data());
-//            cout << tempWeight << " miles" << endl;
-//            totalWeight += tempWeight;
-//        }
-//    }
-    
     for (int p = 0; p < shortestlist.size()-1; p++) {
         totalWeight+=shortestlist[p+1].second;
     }
@@ -196,4 +184,15 @@ bool findShortestPath(Dijkstra<string> &path)
     return true;
 }
 
+void createOutput(Dijkstra<string> &path)
+{
+	ofstream ofs;
+	string filename;
+	cout << "File name: ";
+	getline(cin, filename);
+	ofs.open(filename.c_str());
+
+	path.writeToFile(ofs);
+	ofs.close();
+}
 #endif /* main_h */

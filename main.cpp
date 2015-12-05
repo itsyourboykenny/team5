@@ -15,54 +15,33 @@
 #include "Dijkstra.h"
 #include "main.h"
 
-
 using namespace std;
-//map<string, vector<string>*> ourMap;
-//map<string, vector<string>*>::iterator ourMapIterator;
-//void newPath(Dijkstra<string> *path);
-//void removePath(Dijkstra<string> *path);
-//void undoRemoval(Dijkstra<string> *path);
-//void showPaths(Dijkstra<string> *path);
-//void findShortestPath(Dijkstra<string> *path);
-
-
-
-//bool openInputFile(ifstream&ifs);
-//bool readInputFile(ifstream&ifs, Dijkstra<string> *path);
-//void convertTolower(string &s);
-//void displayShortestPath(vector<string> list, string cityA, string cityB);
 
 int main()
 {
-//    Dijkstra<string> *delivery = new Dijkstra<string>;
-    Dijkstra<string> test1;
+	Dijkstra<string> delivery;
     ifstream inputFile;
-    /* 
-     7) Please indicate the file name you wish the route to have
-     File Name: ____
-     */
-    
     bool answer = 1;
     int choice;
-	if (!readInputFile(inputFile, test1))
+	if (!readInputFile(inputFile, delivery))
     {
         cout << "Cannot open the files. Closing the program!" << endl;
         return 1;
     }
-    //inputFile.open("/Users/itsyourboykenny/Desktop/Dijkstra/Team5 Dijkstra/airdistance.txt");
-    //readInputFile(inputFile, test1);
+
     while (answer)
     {
-        cout << "Welcome to  the delivery simulation!" << endl
-        << "Please choose an option :" << endl
-        << "1. Open a new delivery route" << endl
-        << "2. add a new delivery path" << endl
-        << "3. remove a delivery path" << endl
-        << "4. undo removal of delivery path" << endl
-        << "5. Show possible delivery paths" << endl
-        << "6. find the shortest delivery route" << endl;
+		cout << "Welcome to  the delivery simulation!" << endl
+			<< "Please choose an option :" << endl
+			<< "1. Open a new delivery route" << endl
+			<< "2. add a new delivery path" << endl
+			<< "3. remove a delivery path" << endl
+			<< "4. undo removal of delivery path" << endl
+			<< "5. Show possible delivery paths" << endl
+			<< "6. find the shortest delivery route" << endl
+			<< "7.Please indicate the file name you wish the route to have" << endl;
         choice = inputInt();
-        while (choice < 1 || choice > 7 || cin.fail())
+        while (choice < 1 || choice > 8 || cin.fail())
         {
             cout << "ERROR: Please enter a choice between 1 and 6: ";
             choice = inputInt();
@@ -75,30 +54,21 @@ int main()
                 return 1;
             }
                 break;
-            case 2: newPath(test1);
+			case 2: newPath(delivery);
                 break;
-            case 3: removePath(test1);
+			case 3: removePath(delivery);
                 break;
-            case 4: undoRemoval(test1);
+			case 4: undoRemoval(delivery);
                 break;
-            case 5: showPaths(test1);
+			case 5: showPaths(delivery);
                 break;
-            case 6: findShortestPath(test1);
+			case 6: findShortestPath(delivery);
                 break;
+			case 7: createOutput(delivery);
+				break;
         }
         cout << "Would you like to perform another action? (Y for yes, N for no): ";
         answer = inputBool();
-//		while (!answer)
-//		{
-//			cout << "ERROR: Please enter 1 or 0: ";
-//			answer = inputBool();
-//
-//		}
-//        //while (cin.fail())
-//        //{
-//        //    cout << "ERROR: Please enter 1 or 0: ";
-//        //    input(answer);
-//        //}
     }
     
     /*

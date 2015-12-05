@@ -37,8 +37,8 @@ protected: // protected so you can derive this class for you team project soluti
 
 	void depthFirstTraversalHelper(Vertex<LabelType>* startVertex,
 		void visit(LabelType&));
-//	void breadthFirstTraversalHelper(Vertex<LabelType>* startVertex,
-//		void visit(LabelType&));
+	//	void breadthFirstTraversalHelper(Vertex<LabelType>* startVertex,
+	//		void visit(LabelType&));
 public:
 	LinkedGraph();
 	virtual ~LinkedGraph();
@@ -56,12 +56,12 @@ public:
 
 	int getEdgeWeight(LabelType start, LabelType end) const;
 	void depthFirstTraversal(LabelType start, void visit(LabelType&));
-//	void breadthFirstTraversal(LabelType start, void visit(LabelType&));
+	//	void breadthFirstTraversal(LabelType start, void visit(LabelType&));
 
 	//---> YOU DECLARE HERE (AND WRITE BELOW) THE MEMBER FUNCTION TO
 	//         WRITE THE GRAPH TO A TEXT FILE (SUGGEST TO PASS AN
 	//        ofstream TO THIS !
-	void writeToFile(Vertex<LabelType>* vertex, ofstream& file);
+	void writeToFile(LabelType city, ofstream& file);
 
 }; // end GraphInterface
 
@@ -152,37 +152,37 @@ bool LinkedGraph<LabelType>::remove(LabelType start, LabelType end)
 template<class LabelType>
 int LinkedGraph<LabelType>::getEdgeWeight(LabelType start, LabelType end) const
 {
-    int weight = -1;
-    if (vertices.contains(start))
-    {
-        Vertex<LabelType>* startVertex = vertices.getItem(start);
-        weight = startVertex->getEdgeWeight(end);
-    }  // end if
-    
-    return weight;
+	int weight = -1;
+	if (vertices.contains(start))
+	{
+		Vertex<LabelType>* startVertex = vertices.getItem(start);
+		weight = startVertex->getEdgeWeight(end);
+	}  // end if
+
+	return weight;
 }  // end getEdgeWeight
 
 // Mark all vertices as unvisited
 template<class LabelType>
 void LinkedGraph<LabelType>::unvisitVertices()
 {
-//	pvertexIterator = vertices.iterator();
-//	while (pvertexIterator->hasNext())
-//	{
-//		Vertex<LabelType>* loopVertex = pvertexIterator->next();
-//		loopVertex->unvisit();
-//	}  // end while
+	//	pvertexIterator = vertices.iterator();
+	//	while (pvertexIterator->hasNext())
+	//	{
+	//		Vertex<LabelType>* loopVertex = pvertexIterator->next();
+	//		loopVertex->unvisit();
+	//	}  // end while
 } // endunvisitVertices
 
 template<class LabelType>
 void LinkedGraph<LabelType>::depthFirstTraversal(LabelType startLabel,
 	void visit(LabelType&))
 {
-//	// Mark all vertices as unvisited
-//	unvisitVertices();
-//
-//	Vertex<LabelType>* startVertex = vertices.getItem(startLabel);
-//	depthFirstTraversalHelper(startVertex, visit);
+	//	// Mark all vertices as unvisited
+	//	unvisitVertices();
+	//
+	//	Vertex<LabelType>* startVertex = vertices.getItem(startLabel);
+	//	depthFirstTraversalHelper(startVertex, visit);
 }  // end depthFirstTraversal
 
 //template<class LabelType>
@@ -280,9 +280,20 @@ findOrCreateVertex(const LabelType& vertexLabel)
 //         WRITE THE GRAPH's vertices and its adjacency list
 //         TO A TEXT FILE (SUGGEST TO PASS AN
 //         ofstream TO THIS !
-/*template<class LabelType>
-Vertex<LabelType>* LinkedGraph<LabelType>::writeToFile(Vertex<LabelType>* vertex, ofstream& file)
+template<class LabelType>
+void LinkedGraph<LabelType>::writeToFile(LabelType city, ofstream& file)
 {
+	int l = 15;
+	Vertex<LabelType>* temp = findOrCreateVertex(city);
+	int count = 0;
+	int weight = 0;
+	vector<LabelType> neighbor = temp->getNextNeighbor();
+	count = temp->getNumberOfNeighbors();
+	cout << left << setw(l) << temp->getLabel();
 
-}*/
+	for (int i = 0; i < count; i++)
+	{
+		cout << left << setw(l) << neighbor[i] << temp->getEdgeWeight(neighbor[i]) << endl;
+	}
+}
 #endif

@@ -41,6 +41,7 @@ public:
     bool remove(LabelType cityA, LabelType cityB);
     bool undoRemove();
     void readPath();
+	void writeToFile(ofstream &ofs);
     void reset(){ localList.clear(); this->numberOfVertices = this->numberOfEdges = 0; }
     void refresh(){} //Call this before calculation
 };
@@ -112,6 +113,51 @@ void Dijkstra<LabelType>::readPath(){
         cout << endl;
     }
     
+}
+
+template <class LabelType>
+void Dijkstra<LabelType>::writeToFile(ofstream &ofs)
+{
+	int l = 15;
+	vector<LabelType> temp;
+	ofs << setw(l) << left << "City A" << setw(l) << left << "City B" << setw(l) << left << "Distance" << endl;
+	for (int x = 0; x < l * 3; x++) { ofs << "*"; }
+	ofs << endl;
+	for (localIterator = localList.begin(); localIterator != localList.end(); localIterator++) {
+		temp = localIterator->second->getNextNeighbor();
+		ofs << left << setw(l) << localIterator->first <<
+			setw(l) << left << temp[0] <<
+			setw(l) << left << localIterator->second->getEdgeWeight(temp[0]) << endl;
+
+		for (int f = 1; f < temp.size(); ++f) {
+			ofs << setw(l) << " " <<
+				setw(l) << temp[f] <<
+				setw(l) << left << localIterator->second->getEdgeWeight(temp[f]) << endl;
+		}
+		for (int x = 0; x < l * 3; x++){ ofs << "-"; }
+		ofs << endl;
+	}
+
+	//using the writeOutput in the Linked Graph but linkedGraph does not contain the adj list..
+	//cout << setw(l) << left << "City A" << setw(l) << left << "City B" << setw(l) << left << "Distance" << endl;
+	//for (int x = 0; x < l * 3; x++)
+	//{
+	//	cout << "*";
+	//}
+	//cout << endl;
+
+	//string temp;
+	//for (localIterator = localList.begin(); localIterator != localList.end(); localIterator++)
+	//{
+	//	temp = localList[localIterator->first]->getLabel();
+	//	this->LinkedGraph<LabelType>::writeToFile(temp, ofs);
+
+	//	for (int x = 0; x < l * 3; x++)
+	//	{
+	//		ofs << "-";
+	//	}
+	//	ofs << endl;
+	//}
 }
 
 template <class LabelType>
