@@ -108,16 +108,19 @@ void newPath(Dijkstra<string> &path)
     string cityA,
     cityB;
     int dist;
+    
     cout << "Please indicate which two cities you wish to connect : " << endl
     << "City A : ";
     getline(cin, cityA);
+//    if (cityA.back() == '\n' || cityA.back() == '\r'){cityA.pop_back();}
     cout << endl;
     cout << "City B : ";
     getline(cin, cityB);
+//    if (cityB.back() == '\n' || cityB.back() == '\r'){cityB.pop_back();}
     cout << endl;
     cout << "Distance between them : ";
     cin >> dist;
-//    cin.ignore(80, '\n');
+    cin.ignore(80, '\n');
     cout << endl;
     path.add(cityA, cityB, dist);
 }
@@ -134,11 +137,10 @@ void removePath(Dijkstra<string> &path)
     path.remove(cityA, cityB);
 }
 
-/*void undoRemoval()
- =======
- void undoRemoval(Dijkstra<string> &path)
- {
- }*/
+void undoRemoval(Dijkstra<string> &path){
+    path.undoRemove();
+}
+
 void showPaths(Dijkstra<string> &path)
 {
 //    cout << "City A           City B           distance" << endl

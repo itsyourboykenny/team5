@@ -79,7 +79,7 @@ int main()
                 break;
             case 3: removePath(test1);
                 break;
-//            case 4: undoRemoval(test1);
+            case 4: undoRemoval(test1);
                 break;
             case 5: showPaths(test1);
                 break;

@@ -21,6 +21,7 @@ struct w{
     void init(){lbs = inf; done = false;}
 };
 
+
 template <class LabelType>
 class Dijkstra : public LinkedGraph<LabelType>{
 protected:
@@ -54,8 +55,8 @@ bool Dijkstra<LabelType>::remove(LabelType cityA, LabelType cityB){
     if (localIterator == localList.end())
         return false;
     
-//    pair<LabelType,LabelType> pair(cityA,cityB);
-//    pair<pair<LabelType,LabelType>, int> undo(pair,localList[cityA]->getEdgeWeight(cityB));
+    pair<pair<LabelType, LabelType>, int> cities;
+    cities = make_pair(make_pair(cityA, cityB),localList[cityA]->getEdgeWeight(cityB));
     
     localIterator = localList.find(cityA);
     localIterator->second->disconnect(cityB);
@@ -67,13 +68,25 @@ bool Dijkstra<LabelType>::remove(LabelType cityA, LabelType cityB){
     if (localList[cityB]->getNumberOfNeighbors() == 0)
         localList.erase(localIterator);
     
+    history.insert(history.begin(), cities);
+    
     return true;
 
 }
 
 template <class LabelType>
 bool Dijkstra<LabelType>::undoRemove(){
-//    add(history[0].first, history[0]second, <#int edgeWeight#>)
+    
+    if (history.size() < 1){
+        cout << "Error: Nothing to undo" << endl;
+        return false;
+    }
+    else{
+        add(history[0].first.first, history[0].first.second, history[0].second);
+        history.erase(history.begin());
+        return true;
+    }
+
 }
 
 template <class LabelType>
@@ -204,11 +217,9 @@ vector<pair<LabelType,int>> Dijkstra<LabelType>::solve(LabelType start, LabelTyp
         localIterator = localList.find((weight[localIterator->first]).from);
         pair<LabelType,int> data(origin,localList[origin]->getEdgeWeight(localIterator->first));
         visitList.insert(visitList.begin(), data);
-//        justForNow.insert(justForNow.begin(), localIterator->first);
     }
     pair<LabelType,int> data(start,localList[start]->getEdgeWeight(visitList[0].first));
     visitList.insert(visitList.begin(),data);
-//    justForNow.insert(justForNow.begin(), start);
     
 	return visitList;
 }
