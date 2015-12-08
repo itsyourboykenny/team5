@@ -2,7 +2,7 @@
 //  main.h
 //  Dijkstra
 //
-//  Created by Ken Ishiguro on 12/4/15.
+//  Created by Ken Ishiguro, Ben Neduva, Ye-Eun Myung on 12/4/15.
 //  Copyright © 2015 Ken Ishiguro. All rights reserved.
 //
 
@@ -30,14 +30,19 @@ int inputInt()
 bool inputBool()
 {
     string temp;
-    getline(cin, temp);
-    if (temp.back()=='\n'||temp.back()=='\r') temp.pop_back();
-    if (temp == "Y" || temp == "y")
-        return true;
-    else
-        return false;
-}
+ //   if (temp.back()=='\n'||temp.back()=='\r') temp.pop_back();
+	do 
+	{
+		getline(cin, temp);
+		cout << endl;
+		if (temp == "Y" || temp == "y")
+			return true;
+		else if (temp == "N" || temp == "n")
+			return false;
+		cout << "ERROR: Please enter 'Y' or 'y' for yes and 'N' or 'n' for no: ";
+	} while (temp != "Y" && temp != "y" && temp != "N" && temp != "n");
 
+}
 
 bool openInputFile(ifstream&ifs)
 {
@@ -104,12 +109,18 @@ void removePath(Dijkstra<string> &path)
 {
     string cityA,
     cityB;
+	bool flag;
     cout << "Please indicate which two cities you wish to disconnect : " << endl
     << "City A : ";
     getline(cin, cityA);
     cout << "City B : ";
     getline(cin, cityB);
-    path.remove(cityA, cityB);
+    flag = path.remove(cityA, cityB);
+
+	if (!flag)
+	{
+		cout << "Cannot find the city or cities\n";
+	}
 }
 
 void undoRemoval(Dijkstra<string> &path)
