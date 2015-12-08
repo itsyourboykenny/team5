@@ -3,6 +3,11 @@
 //  - Ye-Eun Myung
 //  - Ken Ishiguro
 
+/*
+This program gets the airdistance input file from the user and displays the
+menu to the user for seven options: open new delivery route, add, remove, undo,
+show pathes, find the shortest path, and write the graph to the output file.
+*/
 //  Created by Frank M. Carrano and Tim Henry.
 //  Copyright (c) 2013 __Pearson Education__. All rights reserved.
 
@@ -21,8 +26,8 @@ int main()
 {
 	Dijkstra<string> delivery;
     ifstream inputFile;
-    bool answer = 1;
-    int choice;
+    bool answer = 1;	// bool answer to ask the user for another answer
+    int choice; // menu choice
 	if (!readInputFile(inputFile, delivery))
     {
         cout << "Cannot open the files. Closing the program!" << endl;
@@ -39,7 +44,7 @@ int main()
 			<< "4. undo removal of delivery path" << endl
 			<< "5. Show possible delivery paths" << endl
 			<< "6. find the shortest delivery route" << endl
-			<< "7.Please indicate the file name you wish the route to have" << endl;
+			<< "7. Create an output file" << endl;
         choice = inputInt();
         while (choice < 1 || choice > 8 || cin.fail())
         {
@@ -75,7 +80,6 @@ int main()
      Dijkstra<string>* myGraph = new Dijkstra<string>();
      cout << "Testing Graph . . . ." << endl << endl;
      graphTest(myGraph);*/
-    
-    system("PAUSE");
-    return 0;
+
+	return 0;
 }  // end main

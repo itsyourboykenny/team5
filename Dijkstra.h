@@ -41,7 +41,8 @@ public:
     bool remove(LabelType cityA, LabelType cityB);
     bool undoRemove();
     void readPath();
-	void writeToFile(ofstream &ofs);
+	LabelType getFirst();
+	void writeFile(ofstream &ofs);
     void reset(){ localList.clear(); this->numberOfVertices = this->numberOfEdges = 0; }
     void refresh(){} //Call this before calculation
 };
@@ -116,46 +117,38 @@ void Dijkstra<LabelType>::readPath(){
 }
 
 template <class LabelType>
-void Dijkstra<LabelType>::writeToFile(ofstream &ofs)
+LabelType Dijkstra<LabelType>::getFirst()
 {
-	int l = 15;
-	vector<LabelType> temp;
-	ofs << setw(l) << left << "City A" << setw(l) << left << "City B" << setw(l) << left << "Distance" << endl;
-	for (int x = 0; x < l * 3; x++) { ofs << "*"; }
-	ofs << endl;
-	for (localIterator = localList.begin(); localIterator != localList.end(); localIterator++) {
-		temp = localIterator->second->getNextNeighbor();
-		ofs << left << setw(l) << localIterator->first <<
-			setw(l) << left << temp[0] <<
-			setw(l) << left << localIterator->second->getEdgeWeight(temp[0]) << endl;
-
-		for (int f = 1; f < temp.size(); ++f) {
-			ofs << setw(l) << " " <<
-				setw(l) << temp[f] <<
-				setw(l) << left << localIterator->second->getEdgeWeight(temp[f]) << endl;
-		}
-		for (int x = 0; x < l * 3; x++){ ofs << "-"; }
-		ofs << endl;
+	localIterator = localList.begin();
+	
+	return localIterator->first;
+}
+template <class LabelType>
+void Dijkstra<LabelType>::writeFile(ofstream &ofs)
+{
+	for (localIterator = localList.begin(); localIterator != localList.end(); localIterator++)
+	{
+		writeToFile(localIterator->first, ofs);
 	}
+	unvisitVertices();
 
-	//using the writeOutput in the Linked Graph but linkedGraph does not contain the adj list..
-	//cout << setw(l) << left << "City A" << setw(l) << left << "City B" << setw(l) << left << "Distance" << endl;
-	//for (int x = 0; x < l * 3; x++)
-	//{
-	//	cout << "*";
-	//}
-	//cout << endl;
+	//int l = 15;
+	//vector<LabelType> temp;
+	//ofs << setw(l) << left << "City A" << setw(l) << left << "City B" << setw(l) << left << "Distance" << endl;
+	//for (int x = 0; x < l * 3; x++) { ofs << "*"; }
+	//ofs << endl;
+	//for (localIterator = localList.begin(); localIterator != localList.end(); localIterator++) {
+	//	temp = localIterator->second->getNextNeighbor();
+	//	ofs << left << setw(l) << localIterator->first <<
+	//		setw(l) << left << temp[0] <<
+	//		setw(l) << left << localIterator->second->getEdgeWeight(temp[0]) << endl;
 
-	//string temp;
-	//for (localIterator = localList.begin(); localIterator != localList.end(); localIterator++)
-	//{
-	//	temp = localList[localIterator->first]->getLabel();
-	//	this->LinkedGraph<LabelType>::writeToFile(temp, ofs);
-
-	//	for (int x = 0; x < l * 3; x++)
-	//	{
-	//		ofs << "-";
+	//	for (int f = 1; f < temp.size(); ++f) {
+	//		ofs << setw(l) << " " <<
+	//			setw(l) << temp[f] <<
+	//			setw(l) << left << localIterator->second->getEdgeWeight(temp[f]) << endl;
 	//	}
+	//	for (int x = 0; x < l * 3; x++){ ofs << "-"; }
 	//	ofs << endl;
 	//}
 }
@@ -163,18 +156,25 @@ void Dijkstra<LabelType>::writeToFile(ofstream &ofs)
 template <class LabelType>
 bool Dijkstra<LabelType>::add(LabelType start, LabelType end, int edgeWeight){
     
+	//this does not create the list in the linkedGraph thus the DFT and BFT are failing to display
     //########### Create a new vertex if it doesnt exist ###########
-    localIterator = localList.find(start);
-    if (localIterator == localList.end()) {
-        localList[start] = new Vertex<LabelType>(start);
-        this->numberOfVertices++;
-    }
-    localIterator = localList.find(end);
-    if (localIterator == localList.end()){
-        localList[end] = new Vertex<LabelType>(end);
-        this->numberOfVertices++;
-    }
-    
+    //localIterator = localList.find(start);
+    //if (localIterator == localList.end()) {
+    //    localList[start] = new Vertex<LabelType>(start);
+    //    this->numberOfVertices++;
+    //}
+    //localIterator = localList.find(end);
+    //if (localIterator == localList.end()){
+    //    localList[end] = new Vertex<LabelType>(end);
+    //    this->numberOfVertices++;
+    //}
+    //
+	Vertex<LabelType> *startCity = findOrCreateVertex(start);
+	Vertex<LabelType> *endCity = findOrCreateVertex(end);
+
+	localList[start] = startCity;
+	localList[end] = endCity;
+
     //    ########### Connects the two vertex ###########
     localList[start]->connect(end,edgeWeight);
     localList[end]->connect(start,edgeWeight);

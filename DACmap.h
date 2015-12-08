@@ -26,7 +26,7 @@ public:
         pdacMap = p;
         mapIterator = (pdacMap->begin());
     }
-    void setCrap(map<KeyType, ItemType> *setMe){pdacMap = setMe;mapIterator = pdacMap->begin();}
+    void setIterator(map<KeyType, ItemType> *setMe){pdacMap = setMe;mapIterator = pdacMap->begin();}
     ItemType next(){ return (mapIterator++)->second; }
     bool hasNext() const { return mapIterator != (pdacMap->end());  }
     
@@ -38,11 +38,12 @@ class DACmap
 {
 private:
     map<KeyType, ItemType> dacMap;
-    typename map<KeyType, ItemType>::iterator thisIterator = dacMap.begin();
+	DACmapIterator<KeyType, ItemType> *thisIterator;
+	//typename map<KeyType, ItemType>::iterator thisIterator = dacMap.begin();
     
 public:
     DACmap(){}
-//    DACmap(const DACmap &source){ dacMap = source.dacMap; thisIterator = dacMap.begin(); thisIterator.setCrap(&dacMap); } // UPDATED
+//    DACmap(const DACmap &source){ dacMap = source.dacMap; thisIterator = dacMap.begin(); thisIterator.setIterator(&dacMap); } // UPDATED
 //    ~DACmap(){ if (thisIterator != 0) delete thisIterator; thisIterator = dacMap.begin(); }
     
     bool isEmpty() const { return dacMap.isEmpty(); }
@@ -59,7 +60,7 @@ public:
     void traverse(void visit(ItemType&)) const;
     
     // For iterator
-//    DACmapIterator<KeyType, ItemType> *iterator();
+    DACmapIterator<KeyType, ItemType> *iterator();
     
     map<KeyType, ItemType> &getIterator(){return thisIterator;}
     
@@ -111,11 +112,11 @@ bool DACmap<KeyType, ItemType>::contains(const KeyType& searchKey) const
     return false; //
 }
 
-//template <class KeyType, class ItemType>
-//DACmapIterator<KeyType, ItemType> *DACmap<KeyType, ItemType>::iterator()
-//{
-//    if (thisIterator != 0)
-//        delete thisIterator;
-//    thisIterator = new DACmapIterator<KeyType, ItemType>(&dacMap);
-//    return &thisIterator;
-//}
+template <class KeyType, class ItemType>
+DACmapIterator<KeyType, ItemType> *DACmap<KeyType, ItemType>::iterator()
+{
+    if (thisIterator != 0)
+        delete thisIterator;
+    thisIterator = new DACmapIterator<KeyType, ItemType>(&dacMap);
+    return thisIterator;
+}

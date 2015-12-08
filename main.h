@@ -12,10 +12,11 @@
 
 void display(string& anItem)
 {
-    cout << "Displaying item - " << anItem << endl;
+    cout << "Displaying city - " << anItem << endl;
 }
 
-int inputInt(){
+int inputInt()
+{
     string temp;
     getline(cin, temp);
     if (temp.back()=='\n'||temp.back()=='\r') temp.pop_back();
@@ -26,7 +27,8 @@ int inputInt(){
     
 }
 
-bool inputBool(){
+bool inputBool()
+{
     string temp;
     getline(cin, temp);
     if (temp.back()=='\n'||temp.back()=='\r') temp.pop_back();
@@ -66,33 +68,6 @@ bool readInputFile(ifstream &ifs, Dijkstra<string> &path)
     }
     return true;
 }
-
-//bool readInputFile(ifstream&ifs, Dijkstra<string> &path){
-//    if (!openInputFile(ifs))
-//        return false;
-//    string cityA, cityB;
-//    int dist;
-//    
-//    while (true)
-//    {
-//        if (!getline(ifs, cityA, ','))
-//            break;
-//        if (!getline(ifs, cityB, ','))
-//            break;
-//        if (!(ifs >> dist))
-//            break;
-//        
-//        cout << cityA << " " << cityB << " " << dist << endl;
-//        /*convertTolower(cityA);
-//         convertTolower(cityB);*/
-//        path.add(cityA, cityB, dist);
-////        ifs.ignore();
-//        
-//    }
-//    
-//    return true;
-//    
-//} // end readInputFile
 
 void convertTolower(string &s)
 {
@@ -137,16 +112,35 @@ void removePath(Dijkstra<string> &path)
     path.remove(cityA, cityB);
 }
 
-void undoRemoval(Dijkstra<string> &path){
+void undoRemoval(Dijkstra<string> &path)
+{
     path.undoRemove();
 }
 
 void showPaths(Dijkstra<string> &path)
 {
-//    cout << "City A           City B           distance" << endl
-//    << "-------          -------          --------" << endl;
-	int answer;
     path.readPath();
+	string city = path.getFirst();
+	int traverse;
+
+	cout << "How would you like to view the list of the cities?" << endl;
+	cout << "1. Depth-First Traversal" << endl;
+	cout << "2. Breadth-First Traversal" << endl;
+	cin >> traverse;
+	while (traverse < 1 || traverse > 2 || cin.fail())
+	{
+		cout << "ERROR: Please enter a choice between 1 and 2: ";
+		cin >> traverse;
+	}
+	switch (traverse)
+	{
+	case 1: path.depthFirstTraversal(city, display);
+		break;
+	case 2: path.breadthFirstTraversal(city, display);
+		break;
+	}
+	cin.ignore();
+	
 }
 bool findShortestPath(Dijkstra<string> &path)
 {
@@ -164,7 +158,8 @@ bool findShortestPath(Dijkstra<string> &path)
         cityB.pop_back();
 
     vector<pair<string, int>> shortestlist = path.findShortestPath(cityA, cityB);
-    if (shortestlist.empty()) {
+    if (shortestlist.empty()) 
+	{
         return false;
     }
     
@@ -172,12 +167,14 @@ bool findShortestPath(Dijkstra<string> &path)
 //    int tempWeight;
     cout << "The shortest route from " << cityA << " to " << cityB << " is: \n";
     int l = 15;
-    for (int g = 0; g < shortestlist.size()-1; g++){
+    for (int g = 0; g < shortestlist.size()-1; g++)
+	{
         cout << setw(l) << right << shortestlist[g].first << " -> " << setw(l) << left << shortestlist[g+1].first <<
         " w/ distance of: " <<shortestlist[g+1].second << endl;
     }
     
-    for (int p = 0; p < shortestlist.size()-1; p++) {
+    for (int p = 0; p < shortestlist.size()-1; p++) 
+	{
         totalWeight+=shortestlist[p+1].second;
     }
     cout << "And the total distance is: " << totalWeight << " miles" << endl;
@@ -192,7 +189,7 @@ void createOutput(Dijkstra<string> &path)
 	getline(cin, filename);
 	ofs.open(filename.c_str());
 
-	path.writeToFile(ofs);
+	path.writeFile(ofs);
 	ofs.close();
 }
 #endif /* main_h */
